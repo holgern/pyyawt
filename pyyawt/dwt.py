@@ -16,6 +16,23 @@ __all__ = ['dbwavf', 'coifwavf']
 
 
 def dbwavf(wname):
+    """
+    dbwavf is an utility function for obtaining scaling filter of daubechies wavelet.
+
+    Parameters
+    ----------
+    wname: str
+         wavelet name, 'db1' to 'db36'
+
+    Returns
+    -------
+    F: array_like
+         scaling filter
+
+    Examples
+    --------
+    F = dbwavf("db2")
+    """
     ret = _wavelet_parser(wname)
     if (ret[0] != 1):
         raise Exception("Wrong wavelet name!")
