@@ -16,6 +16,16 @@ class TestCoifwavf(unittest.TestCase):
             w = pyyawt.coifwavf("coif" + str(N))
             np.testing.assert_almost_equal(np.sum(w)-np.sqrt(2),0)
 
+    def test_sumEven(self):
+        for N in np.arange(1,18):
+            w = pyyawt.coifwavf("coif" + str(N))
+            np.testing.assert_almost_equal(np.sum(w[::2]), 1./np.sqrt(2))
+
+    def test_sumOdd(self):
+        for N in np.arange(1,18):
+            w = pyyawt.coifwavf("coif" + str(N))
+            np.testing.assert_almost_equal(np.sum(w[1::2]),1./np.sqrt(2))
+
 
 if __name__ == '__main__':
     # run_module_suite(argv=sys.argv)
