@@ -14,10 +14,12 @@ class TestDWT(unittest.TestCase):
     def test_wavelet_parser(self):
         family = -1
         member = -1
-        family,member = pyyawt._wavelet_parser("db2")
+        wname = "db2"
+        family,member = pyyawt._wavelet_parser(wname.encode())
         np.testing.assert_equal(family, 1)
         np.testing.assert_equal(member, 2)
-        family,member = pyyawt._wavelet_parser("coif2")
+        wname = "coif2"
+        family,member = pyyawt._wavelet_parser(wname.encode())
         np.testing.assert_equal(family, 2)
 
     def test_dbwavf(self):

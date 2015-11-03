@@ -42,6 +42,23 @@ def dbwavf(wname):
 
 
 def coifwavf(wname):
+    """
+    coifwavf is an utility function for obtaining scaling filter of coiflets wavelet.
+
+    Parameters
+    ----------
+    wname: str
+         wavelet name, 'coif1' to 'coif5'
+
+    Returns
+    -------
+    F: array_like
+         scaling filter
+
+    Examples
+    --------
+    F = coifwavf('coif3')
+    """
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != 2):
         raise Exception("Wrong wavelet name!")
