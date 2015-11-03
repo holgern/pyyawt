@@ -1,0 +1,12 @@
+[run]
+include = 
+    */pyyawt/*
+omit = 
+    */version.py
+    */setup.py
+    */__init__.py
+    */util/*
+
+[report]
+exclude_lines =
+    pragma: no cover
