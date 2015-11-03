@@ -33,18 +33,18 @@ def dbwavf(wname):
     --------
     F = dbwavf("db2")
     """
-    ret = _wavelet_parser(wname)
+    ret = _wavelet_parser(wname.encode())
     if (ret[0] != 1):
         raise Exception("Wrong wavelet name!")
-    lowPass = np.zeros(_dbwavf_length(wname),dtype=np.float64)
-    _dbwavf(wname,lowPass)
+    lowPass = np.zeros(_dbwavf_length(wname.encode()),dtype=np.float64)
+    _dbwavf(wname.encode(),lowPass)
     return lowPass
 
 
 def coifwavf(wname):
-    ret = _wavelet_parser(wname)
+    ret = _wavelet_parser(wname.encode())
     if (ret[0] != 2):
         raise Exception("Wrong wavelet name!")
-    lowPass = np.zeros(_coifwavf_length(wname),dtype=np.float64)
-    _coifwavf(wname,lowPass)
+    lowPass = np.zeros(_coifwavf_length(wname.encode()),dtype=np.float64)
+    _coifwavf(wname.encode(),lowPass)
     return lowPass
