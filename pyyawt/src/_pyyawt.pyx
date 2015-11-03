@@ -8,7 +8,7 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "PYYAWT_KINGSBURYQ", "PYYAWT_NOT_DEFINED", "PYYAWT_ORTH", "PYYAWT_BIORTH",
         "_wavelet_parser", "_dbwavf_length", "_dbwavf","_coifwavf",
         "_coifwavf_length", "_symwavf", "_symwavf_length", "_legdwavf",
-        "_legdwavf_length", "_biorwavf", "_biorwavf_length"]
+        "_legdwavf_length", "_biorwavf", "_biorwavf_length", "_rbiorwavf", "_rbiorwavf_length"]
 
 
 from c_pyyawt cimport *
@@ -162,3 +162,28 @@ def _biorwavf_length(char *wname):
         sp_bior_synthesis_initialize(ret_member,&thisptr)
         return thisptr.length
 
+def _rbiorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[np.float64_t, ndim=1] sigbuf2):
+        cdef int ret_family
+        cdef int ret_member
+        ret_family = -1
+        ret_member = -1
+        wavelet_parser(wname, &ret_family, &ret_member)
+        cdef swt_wavelet thisptr
+
+        sp_rbior_synthesis_initialize(ret_member,&thisptr)
+        m2 = 1;
+        n2 = thisptr.length
+        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf1.data, m2*n2)
+        
+        sp_rbior_analysis_initialize(ret_member,&thisptr)
+        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf2.data, m2*n2)
+
+def _rbiorwavf_length(char *wname):
+        cdef int ret_family
+        cdef int ret_member
+        ret_family = -1
+        ret_member = -1
+        wavelet_parser(wname, &ret_family, &ret_member)
+        cdef swt_wavelet thisptr
+        sp_rbior_synthesis_initialize(ret_member,&thisptr)
+        return thisptr.length
