@@ -12,7 +12,7 @@ import numpy as np
 import sys as sys
 from ._pyyawt import *
 
-__all__ = ['dbwavf', 'coifwavf', 'symwavf', 'legdwavf']
+__all__ = ['dbwavf', 'coifwavf', 'symwavf', 'legdwavf', 'biorwavf']
 
 
 def dbwavf(wname):
@@ -117,3 +117,31 @@ def legdwavf(wname):
     lowPass = np.zeros(_legdwavf_length(wname.encode()),dtype=np.float64)
     _legdwavf(wname.encode(),lowPass)
     return lowPass
+
+
+def biorwavf(wname):
+    """
+    biorwavf is an utility function for obtaining twin scaling filters of bi-orthogonal spline wavelet including bior1.1, bior1.3, bior1.5, bior2.2, bior2.4, bior2.6, bior2.8, bior3.1, bior3.3, bior3.5, bior3.7, bior3.9, bior4.4, bior5.5 and bior6.8. Although the twin filters have different length, zeros has been fed to keep two filters the same length.
+
+    Parameters
+    ----------
+    wname: str
+         wavelet name,  'bior1.1' to 'bior6.8'
+
+    Returns
+    -------
+    RF: array_like
+         synthesis scaling filter
+    DF: array_like
+         analysis scaling filter
+    Examples
+    --------
+    RF,DF = biorwavf('bior3.3');
+    """
+    ret = _wavelet_parser(wname.encode())
+    if (ret[0] != PYYAWT_SPLINE_BIORTH):
+        raise Exception("Wrong wavelet name!")
+    RF = np.zeros(_biorwavf_length(wname.encode()),dtype=np.float64)
+    DF = np.zeros(_biorwavf_length(wname.encode()),dtype=np.float64)
+    _biorwavf(wname.encode(),RF,DF)
+    return RF,DF
