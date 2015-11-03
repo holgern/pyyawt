@@ -10,7 +10,7 @@ def configuration(parent_package='', top_path=None):
 
     config.add_data_dir('tests')
 
-    sources = ["_pyyawt", "bathlets", "beylkin", "bior", "bior_t", "coiflets", "cowt", "cwt", "daubechies", "dmey", 
+    sources = ["_pyyawt", "bathlets", "beylkin", "bior", "bior_t", "coiflets", "cowt", "cwt", "daubechies", "dmey",
                "dwt1d", "dwt2d", "dwt3d", "farras", "haar", "kingsbury", "kiss_fft", "legendre", "swt", "symlets",
                "utility", "vaidyanathan"]
     headers = ["kiss_fft", "swtlib", "_kiss_fft_guts"]

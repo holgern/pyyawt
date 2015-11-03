@@ -10,8 +10,8 @@ matrix:
         - pip install pep8==1.6.2
         - pip install pyflakes
       script:
-        - PYFLAKES_NODOCTEST=1 pyflakes pyedflib demo | grep -E -v 'unable to detect undefined names|assigned to but never used|imported but unused|redefinition of unused' > test.out; cat test.out; test \! -s test.out
-        - pep8 pyedflib demo
+        - PYFLAKES_NODOCTEST=1 pyflakes pyyawt demo | grep -E -v 'unable to detect undefined names|assigned to but never used|imported but unused|redefinition of unused' > test.out; cat test.out; test \! -s test.out
+        - pep8 pyyawt demo
 
     - python: 3.5
       env:

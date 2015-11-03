@@ -8,12 +8,11 @@ Helper function for wavelet denoising
 """
 
 from __future__ import division, print_function, absolute_import
-
-__all__ = ['dbwavf', 'coifwavf']
-
 import numpy as np
 import sys as sys
 from ._pyyawt import *
+
+__all__ = ['dbwavf', 'coifwavf']
 
 
 def dbwavf(wname):
@@ -23,7 +22,8 @@ def dbwavf(wname):
     lowPass = np.zeros(_dbwavf_length(wname),dtype=np.float64)
     _dbwavf(wname,lowPass)
     return lowPass
-    
+
+
 def coifwavf(wname):
     ret = _wavelet_parser(wname)
     if (ret[0] != 2):
