@@ -39,11 +39,12 @@ def orthfilt(w):
     F = dbwavf("db2")
     [lo_d,hi_d,lo_r,hi_r]=orthfilt(F)
     """
-    m1, n1 = w.shape
-    Lo_D = np.zeros(n1*m1,dtype=np.float64)
-    Hi_D = np.zeros(n1*m1,dtype=np.float64)
-    Lo_R = np.zeros(n1*m1,dtype=np.float64)
-    Hi_R = np.zeros(n1*m1,dtype=np.float64)
+    m1 = 1
+    n1 = w.shape[0]    
+    Lo_D = np.zeros(n1,dtype=np.float64)
+    Hi_D = np.zeros(n1,dtype=np.float64)
+    Lo_R = np.zeros(n1,dtype=np.float64)
+    Hi_R = np.zeros(n1,dtype=np.float64)
     _orthfilt(w,Lo_D,Hi_D,Lo_R,Hi_R)
     return Lo_D,Hi_D,Lo_R,Hi_R
 
@@ -74,11 +75,12 @@ def biorfilt(df,rf):
     RF,DF = biorwavf('bior3.3'
     [lo_d,hi_d,lo_r,hi_r]=biorfilt(DF,RF)
     """
-    m1,n1 = df.shape
-    Lo_D = np.zeros(n1*m1,dtype=np.float64)
-    Hi_D = np.zeros(n1*m1,dtype=np.float64)
-    Lo_R = np.zeros(n1*m1,dtype=np.float64)
-    Hi_R = np.zeros(n1*m1,dtype=np.float64)
+    m1 = 1
+    n1 = df.shape[0]
+    Lo_D = np.zeros(n1,dtype=np.float64)
+    Hi_D = np.zeros(n1,dtype=np.float64)
+    Lo_R = np.zeros(n1,dtype=np.float64)
+    Hi_R = np.zeros(n1,dtype=np.float64)
     _biorfilt(df,rf,Lo_D,Hi_D,Lo_R,Hi_R)
     return Lo_D,Hi_D,Lo_R,Hi_R
 

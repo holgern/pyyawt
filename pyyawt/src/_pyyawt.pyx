@@ -53,6 +53,7 @@ def _dbwavf_length(char *wname):
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
         daubechies_synthesis_initialize(ret_member,&thisptr)
+        filter_clear()
         return thisptr.length
 
 def _dbwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
@@ -67,6 +68,7 @@ def _dbwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         m2 = 1;
         n2 = thisptr.length
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        filter_clear()
 
 def _coifwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
@@ -80,6 +82,7 @@ def _coifwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         m2 = 1;
         n2 = thisptr.length
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        filter_clear()
   
 def _coifwavf_length(char *wname):
         cdef int ret_family
@@ -103,6 +106,7 @@ def _symwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         m2 = 1;
         n2 = thisptr.length
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        filter_clear()
   
 def _symwavf_length(char *wname):
         cdef int ret_family
@@ -126,6 +130,7 @@ def _legdwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         m2 = 1;
         n2 = thisptr.length
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        filter_clear()
 
 def _legdwavf_length(char *wname):
         cdef int ret_family
@@ -152,6 +157,7 @@ def _biorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[
         
         sp_bior_analysis_initialize(ret_member,&thisptr)
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf2.data, m2*n2)
+        filter_clear()
 
 def _biorwavf_length(char *wname):
         cdef int ret_family
@@ -178,6 +184,7 @@ def _rbiorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray
         
         sp_rbior_analysis_initialize(ret_member,&thisptr)
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf2.data, m2*n2)
+        filter_clear()
 
 def _rbiorwavf_length(char *wname):
         cdef int ret_family
@@ -192,8 +199,6 @@ def _rbiorwavf_length(char *wname):
 def _wfilters_length(char *wname):
         cdef int ret_family
         cdef int ret_member
-        ret_family = -1
-        ret_member = -1
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
         if (ret_family == DAUBECHIES):
@@ -210,19 +215,15 @@ def _wfilters_length(char *wname):
                 vaidyanathan_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == DMEY):
                 dmey_synthesis_initialize(ret_member,&thisptr)
-        elif (ret_family == BATHLETS):
-                dmey_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == LEGENDRE):
-                dmey_synthesis_initialize(ret_member,&thisptr)
+                legendre_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == SPLINE_RBIORTH):
-                dmey_synthesis_initialize(ret_member,&thisptr)
+                sp_rbior_synthesis_initialize(ret_member,&thisptr)
         return thisptr.length
         
 def _wfilters(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[np.float64_t, ndim=1] sigbuf2, np.ndarray[np.float64_t, ndim=1] sigbuf3, np.ndarray[np.float64_t, ndim=1] sigbuf4):
         cdef int ret_family
         cdef int ret_member
-        ret_family = -1
-        ret_member = -1
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
         if (ret_family == DAUBECHIES):
@@ -239,12 +240,10 @@ def _wfilters(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[
                 vaidyanathan_analysis_initialize(ret_member,&thisptr)
         elif (ret_family == DMEY):
                 dmey_analysis_initialize(ret_member,&thisptr)
-        elif (ret_family == BATHLETS):
-                dmey_analysis_initialize(ret_member,&thisptr)
         elif (ret_family == LEGENDRE):
-                dmey_analysis_initialize(ret_member,&thisptr)
+                legendre_analysis_initialize(ret_member,&thisptr)
         elif (ret_family == SPLINE_RBIORTH):
-                dmey_analysis_initialize(ret_member,&thisptr)
+                sp_rbior_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf1.data, m2*n2)
@@ -263,15 +262,15 @@ def _wfilters(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[
                 vaidyanathan_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == DMEY):
                 dmey_synthesis_initialize(ret_member,&thisptr)
-        elif (ret_family == BATHLETS):
-                dmey_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == LEGENDRE):
-                dmey_synthesis_initialize(ret_member,&thisptr)
+                legendre_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == SPLINE_RBIORTH):
-                dmey_synthesis_initialize(ret_member,&thisptr)
+                sp_rbior_synthesis_initialize(ret_member,&thisptr)
+        m2 = 1;
+        n2 = thisptr.length
         verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf3.data, m2*n2)
         verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf4.data, m2*n2)
-        
+        filter_clear()
         
 def _conv(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t, ndim=2] input2, np.ndarray[np.float64_t, ndim=2] output1):
         cdef int m1, n1
@@ -288,42 +287,42 @@ def _conv(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t, ndim
 
 def _orthfilt(np.ndarray[np.float64_t, ndim=1] input1, np.ndarray[np.float64_t, ndim=1] output1, np.ndarray[np.float64_t, ndim=1] output2, np.ndarray[np.float64_t, ndim=1] output3, np.ndarray[np.float64_t, ndim=1] output4):
         cdef int m1, n1
-        m1 = input1.shape[0]
-        n1 = input1.shape[1]
+        m1 = 1
+        n1 = input1.shape[0]
         cdef int m2, n2
-        m2 = output1.shape[0]
-        n2 = output1.shape[1]
+        m2 = 1
+        n2 = output1.shape[0]
         cdef int m3, n3
-        m3 = output2.shape[0]
-        n3 = output2.shape[1]
+        m3 = 1
+        n3 = output2.shape[0]
         cdef int m4, n4
-        m4 = output3.shape[0]
-        n4 = output3.shape[1]
+        m4 = 1
+        n4 = output3.shape[0]
         cdef int m5, n5
-        m5 = output4.shape[0]
-        n5 = output4.shape[1]
+        m5 = 1
+        n5 = output4.shape[0]
 
         orth_filt_group (<double*>input1.data, m1*n1, <double*>output3.data, <double*>output1.data, <double*>output4.data, <double*>output2.data)
 
 def _biorfilt(np.ndarray[np.float64_t, ndim=1] input1, np.ndarray[np.float64_t, ndim=1] input2, np.ndarray[np.float64_t, ndim=1] output1, np.ndarray[np.float64_t, ndim=1] output2, np.ndarray[np.float64_t, ndim=1] output3, np.ndarray[np.float64_t, ndim=1] output4):
         cdef int m1, n1
-        m1 = input1.shape[0]
-        n1 = input1.shape[1]
+        m1 = 1
+        n1 = input1.shape[0]
         cdef int m2, n2
-        m2 = input2.shape[0]
-        n2 = input2.shape[1]
+        m2 = 1
+        n2 = input2.shape[0]
         cdef int m3, n3
-        m3 = output1.shape[0]
-        n3 = output1.shape[1]
+        m3 = 1
+        n3 = output1.shape[0]
         cdef int m4, n4
-        m4 = output2.shape[0]
-        n4 = output2.shape[1]
+        m4 = 1
+        n4 = output2.shape[0]
         cdef int m5, n5
-        m5 = output3.shape[0]
-        n5 = output3.shape[1]
+        m5 = 1
+        n5 = output3.shape[0]
         cdef int m6, n6
-        m6 = output4.shape[0]
-        n6 = output4.shape[1]
+        m6 = 1
+        n6 = output4.shape[0]
 
 
         bior_filt_group (<double*>input1.data, m1*n1, <double*>input2.data, m2*n2, <double*>output1.data, m3*n3, <double*>output2.data, m4*n4, <double*>output3.data, m5*n5, <double*>output4.data, m6*n6)
