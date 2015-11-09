@@ -332,6 +332,11 @@ def wfilters(wname,filterType=None):
         _rbiorwavf(wname.encode(),b'Hi_D',Hi_D)
         _rbiorwavf(wname.encode(),b'Lo_R',Lo_R)
         _rbiorwavf(wname.encode(),b'Hi_R',Hi_R)
+    elif (ret_family == PYYAWT_HAAR):
+        _dbwavf(b'db1',b'Lo_D',Lo_D)
+        _dbwavf(b'db1',b'Hi_D',Hi_D)
+        _dbwavf(b'db1',b'Lo_R',Lo_R)
+        _dbwavf(b'db1',b'Hi_R',Hi_R)        
     # _wfilters(wname.encode(),Lo_D,Hi_D,Lo_R,Hi_R)
     if (filterType is None):
         flow = 1
