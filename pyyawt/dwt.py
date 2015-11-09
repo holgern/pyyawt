@@ -12,7 +12,75 @@ import numpy as np
 import sys as sys
 from ._pyyawt import *
 
-__all__ = ['dbwavf', 'coifwavf', 'symwavf', 'legdwavf', 'biorwavf', 'rbiorwavf']
+__all__ = ['orthfilt', 'biorfilt', 'dbwavf', 'coifwavf', 'symwavf', 'legdwavf', 'biorwavf', 'rbiorwavf', 'wfilters']
+
+
+def orthfilt(w):
+    """
+    orthfilt is an utility function for obtaining analysis and synthesis filter set of given orthogonal wavelets including haar, daubechies, coiflets and symlets
+
+    Parameters
+    ----------
+    w: array_like
+         scaling filter
+
+    Returns
+    -------
+    Lo_D: array_like
+         lowpass analysis filter
+    Hi_D: array_like
+         highpass analysis filter
+    Lo_R: array_like
+         lowpass synthesis filter
+    Hi_R: array_like
+         highpass synthesis filter
+    Examples
+    --------
+    F = dbwavf("db2")
+    [lo_d,hi_d,lo_r,hi_r]=orthfilt(F)
+    """
+    m1, n1 = w.shape
+    Lo_D = np.zeros(n1*m1,dtype=np.float64)
+    Hi_D = np.zeros(n1*m1,dtype=np.float64)
+    Lo_R = np.zeros(n1*m1,dtype=np.float64)
+    Hi_R = np.zeros(n1*m1,dtype=np.float64)
+    _orthfilt(w,Lo_D,Hi_D,Lo_R,Hi_R)
+    return Lo_D,Hi_D,Lo_R,Hi_R
+
+
+def biorfilt(df,rf):
+    """
+    biorfilt is an utility function for obtaining analysis and synthesis filter set of given bi-orthogonal spline wavelets. DF and RF should be output of biorfilt result with the same length.
+
+    Parameters
+    ----------
+    df: array_like
+         analysis scaling filter
+    rf: array_like
+         synthesis scaling filter
+
+    Returns
+    -------
+    Lo_D: array_like
+         lowpass analysis filter
+    Hi_D: array_like
+         highpass analysis filter
+    Lo_R: array_like
+         lowpass synthesis filter
+    Hi_R: array_like
+         highpass synthesis filter
+    Examples
+    --------
+    RF,DF = biorwavf('bior3.3'
+    [lo_d,hi_d,lo_r,hi_r]=biorfilt(DF,RF)
+    """
+    m1,n1 = df.shape
+    Lo_D = np.zeros(n1*m1,dtype=np.float64)
+    Hi_D = np.zeros(n1*m1,dtype=np.float64)
+    Lo_R = np.zeros(n1*m1,dtype=np.float64)
+    Hi_R = np.zeros(n1*m1,dtype=np.float64)
+    _biorfilt(df,rf,Lo_D,Hi_D,Lo_R,Hi_R)
+    return Lo_D,Hi_D,Lo_R,Hi_R
 
 
 def dbwavf(wname):
@@ -173,3 +241,63 @@ def rbiorwavf(wname):
     DF = np.zeros(_rbiorwavf_length(wname.encode()),dtype=np.float64)
     _rbiorwavf(wname.encode(),RF,DF)
     return RF,DF
+
+
+def wfilters(wname,filterType=None):
+    """
+    wfilters is an utility function for obtaining analysis and synthesis filter set.
+
+    Calling Sequence
+    ----------------
+
+    [Lo_D,Hi_D,Lo_R,Hi_R]=wfilters(wname)
+    [Lo_D,Hi_D]=wfilters(wname,'d')
+    [Lo_R,Hi_R]=wfilters(wname,'r')
+    [Lo_D,Lo_R]=wfilters(wname,'l')
+    [Hi_D,Hi_R]=wfilters(wname,'h')
+
+    Parameters
+    ----------
+    wname: str
+         wavelet name,  wavelet name, haar( "haar"), daubechies ("db1" to "db20"), coiflets ("coif1" to "coif5"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
+
+    Returns
+    -------
+    Lo_D: array_like
+         lowpass analysis filter
+    Hi_D: array_like
+         highpass analysis filter
+    Lo_R: array_like
+         lowpass synthesis filter
+    Hi_R: array_like
+         highpass synthesis filter
+    Examples
+    --------
+    [lo_d,hi_d,lo_r,hi_r]=wfilters('db2')
+    """
+    ret = _wavelet_parser(wname.encode())
+    if (np.any(ret[0] == [PYYAWT_FARRAS, PYYAWT_KINGSBURYQ, PYYAWT_NOT_DEFINED])):
+        raise Exception("Wrong wavelet name!")
+    filterLength = _wfilters_length(wname.encode())
+    Lo_D = np.zeros(filterLength,dtype=np.float64)
+    Hi_D = np.zeros(filterLength,dtype=np.float64)
+    Lo_R = np.zeros(filterLength,dtype=np.float64)
+    Hi_R = np.zeros(filterLength,dtype=np.float64)
+    _wfilters(wname.encode(),Lo_D,Hi_D,Lo_R,Hi_R)
+    if (filterType is None):
+        flow = 1
+        return Lo_D, Hi_D, Lo_R, Hi_R
+    elif (filterType == 'd'):
+        flow = 2
+        return Lo_D, Hi_D
+    elif (filterType == 'r'):
+        flow = 3
+        return Lo_R, Hi_R
+    elif (filterType == 'l'):
+        flow = 4
+        return Lo_D, Lo_R
+    elif (filterType == 'h'):
+        flow = 5
+        return Hi_D, Hi_R
+    else:
+        raise Exception("Wrong input!")

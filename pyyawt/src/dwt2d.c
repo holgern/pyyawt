@@ -1,9 +1,9 @@
 /*
  * -------------------------------------------------------------------------
  * dwt2d.c -- 2-D signal decomposition and reconstruction
- * SWT - Scilab wavelet toolbox
+ * PYYAWT - yet another python wavelet toolbox
  * Copyright (C) 2005-2006  Roger Liu
- * Copyright (C) 20010-2012  Holger Nahrstaedt
+ * Copyright (C) 2010-2015  Holger Nahrstaedt
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
