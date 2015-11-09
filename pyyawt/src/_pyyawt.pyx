@@ -56,21 +56,26 @@ def _dbwavf_length(char *wname):
         filter_clear()
         return thisptr.length
 
-def _dbwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
+def _dbwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
         cdef int ret_member
         ret_family = -1
         ret_member = -1
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
-
-        daubechies_synthesis_initialize(ret_member,&thisptr)
+        if (filtertype == b'Lo_R' or filtertype == b'Hi_R'):
+                daubechies_synthesis_initialize(ret_member,&thisptr)
+        else:
+                daubechies_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
+                verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        else:
+                verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
         filter_clear()
 
-def _coifwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
+def _coifwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
         cdef int ret_member
         ret_family = -1
@@ -78,10 +83,17 @@ def _coifwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
 
-        coiflets_synthesis_initialize(ret_member,&thisptr)
+        if (filtertype == b'Lo_R' or filtertype == b'Hi_R'):
+                coiflets_synthesis_initialize(ret_member,&thisptr)
+        else:
+                coiflets_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
+                verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        else:
+                verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
+
         filter_clear()
   
 def _coifwavf_length(char *wname):
@@ -94,7 +106,7 @@ def _coifwavf_length(char *wname):
         coiflets_synthesis_initialize(ret_member,&thisptr)
         return thisptr.length
 
-def _symwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
+def _symwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
         cdef int ret_member
         ret_family = -1
@@ -102,10 +114,17 @@ def _symwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
 
-        symlets_synthesis_initialize(ret_member,&thisptr)
+        if (filtertype == b'Lo_R' or filtertype == b'Hi_R'):
+                symlets_synthesis_initialize(ret_member,&thisptr)
+        else:
+                symlets_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
+                verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        else:
+                verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
+
         filter_clear()
   
 def _symwavf_length(char *wname):
@@ -118,7 +137,7 @@ def _symwavf_length(char *wname):
         symlets_synthesis_initialize(ret_member,&thisptr)
         return thisptr.length
 
-def _legdwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
+def _legdwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
         cdef int ret_member
         ret_family = -1
@@ -126,10 +145,17 @@ def _legdwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf):
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
 
-        legendre_synthesis_initialize(ret_member,&thisptr)
+        if (filtertype == b'Lo_R' or filtertype == b'Hi_R'):
+                legendre_synthesis_initialize(ret_member,&thisptr)
+        else:
+                legendre_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
+                verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        else:
+                verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
+
         filter_clear()
 
 def _legdwavf_length(char *wname):
@@ -142,7 +168,7 @@ def _legdwavf_length(char *wname):
         legendre_synthesis_initialize(ret_member,&thisptr)
         return thisptr.length
 
-def _biorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[np.float64_t, ndim=1] sigbuf2):
+def _biorwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
         cdef int ret_member
         ret_family = -1
@@ -150,13 +176,16 @@ def _biorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
 
-        sp_bior_synthesis_initialize(ret_member,&thisptr)
+        if (filtertype == b'Lo_R' or filtertype == b'Hi_R'):
+                sp_bior_synthesis_initialize(ret_member,&thisptr)
+        else:
+                sp_bior_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf1.data, m2*n2)
-        
-        sp_bior_analysis_initialize(ret_member,&thisptr)
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf2.data, m2*n2)
+        if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
+                verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        else:
+                verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
         filter_clear()
 
 def _biorwavf_length(char *wname):
@@ -169,7 +198,7 @@ def _biorwavf_length(char *wname):
         sp_bior_synthesis_initialize(ret_member,&thisptr)
         return thisptr.length
 
-def _rbiorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray[np.float64_t, ndim=1] sigbuf2):
+def _rbiorwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
         cdef int ret_member
         ret_family = -1
@@ -177,13 +206,16 @@ def _rbiorwavf(char *wname, np.ndarray[np.float64_t, ndim=1] sigbuf1, np.ndarray
         wavelet_parser(wname, &ret_family, &ret_member)
         cdef swt_wavelet thisptr
 
-        sp_rbior_synthesis_initialize(ret_member,&thisptr)
+        if (filtertype == b'Lo_R' or filtertype == b'Hi_R'):
+                sp_rbior_synthesis_initialize(ret_member,&thisptr)
+        else:
+                sp_rbior_analysis_initialize(ret_member,&thisptr)
         m2 = 1;
         n2 = thisptr.length
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf1.data, m2*n2)
-        
-        sp_rbior_analysis_initialize(ret_member,&thisptr)
-        verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf2.data, m2*n2)
+        if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
+                verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
+        else:
+                verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
         filter_clear()
 
 def _rbiorwavf_length(char *wname):
