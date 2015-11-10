@@ -11,7 +11,8 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_wavelet_parser", "_dbwavf","_coifwavf","_symwavf", "_legdwavf", "_biorwavf",  "_rbiorwavf",
         "_wfilters_length", "_conv", "_orthfilt", "_biorfilt","_haarwavf",
         "_beylkinwavf", "_vaidyanathanwavf", "_dmeywavf", "_bathletswavf", "_legendrewavf",
-        "_farraswavf", "_kingsburyqwavf", "_wave_len_validate", "_getdwtMode", "_dwtWrite"]
+        "_farraswavf", "_kingsburyqwavf", "_wave_len_validate", "_getdwtMode", "_dwtWrite",
+        "_dwt_neo"]
 
 
 from c_pyyawt cimport *
@@ -492,3 +493,19 @@ def _dwtWrite(char* mode):
                 #dwtMode = PER
         #setdwtMode(dwtMode)
         return errCode
+        
+def _dwt_neo(np.ndarray[np.float64_t, ndim=1] input1, np.ndarray[np.float64_t, ndim=1] input2, np.ndarray[np.float64_t, ndim=1] input3, np.ndarray[np.float64_t, ndim=1] output1, np.ndarray[np.float64_t, ndim=1] output2):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input1.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = input2.shape[0]
+        cdef int m3, n3
+        m3 = 1
+        n3 = input3.shape[0]
+        cdef int m4, n4
+        m4 = 1
+        n4 = output1.shape[0]
+
+        dwt_neo (<double*>input1.data, m1*n1, <double*>input2.data,  <double*>input3.data,m3*n3,  <double*>output1.data, <double*>output2.data, m4*n4, getdwtMode());

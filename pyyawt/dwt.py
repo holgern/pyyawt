@@ -416,6 +416,31 @@ def wmaxlev(signalLength,wname):
 
 
 def dwtmode(mode=None, nodisp=None):
+    """
+    dwtmode is to display or change extension mode.
+
+    Parameters
+    ----------
+    mode: str
+           'symh'('sym'), 'symw', 'asymh', 'asymw', 'zpd', 'zpd', 'per', 'ppd'.
+
+    nodisp: str
+          None or 'nodisp'
+
+    Returns
+    -------
+    mode: str
+          extension mode
+
+    Examples
+    --------
+    dwtmode()
+    dwtmode('status')
+    mode=dwtmode('status','nodisp')
+    dwtmode(mode)
+
+    """
+
     mode_strings = np.array(['zpd','symh', 'symw', 'asymh', 'asymw', 'sp0', 'sp1', 'ppd', 'per'])
     modes = np.array([PYYAWT_ZPD, PYYAWT_SYMH, PYYAWT_SYMW, PYYAWT_ASYMH, PYYAWT_ASYMW, PYYAWT_SP0,
                           PYYAWT_SP1, PYYAWT_PPD, PYYAWT_PER])

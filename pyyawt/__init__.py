@@ -14,6 +14,7 @@ from __future__ import division, print_function, absolute_import
 from .dwt import *
 from .utility import *
 from ._pyyawt import *
+from .dwt1d import *
 
 from pyyawt.version import version as __version__
 
