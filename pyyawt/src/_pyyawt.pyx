@@ -468,7 +468,7 @@ def _getdwtMode():
         elif (getdwtMode() == PER):
                 return PYYAWT_PER
 
-def _dwtWrite(status):
+def _dwtWrite(extend_method status):
         setdwtMode(status)
         #if (status == PYYAWT_ZPD):
                 #setdwtMode(ZPD)
