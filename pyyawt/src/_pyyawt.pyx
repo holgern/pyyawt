@@ -468,24 +468,27 @@ def _getdwtMode():
         elif (getdwtMode() == PER):
                 return PYYAWT_PER
 
-def _dwtWrite(status):
-        cdef extend_method dwtMode
-        if (status == PYYAWT_ZPD):
-                dwtMode = ZPD
-        elif (status == PYYAWT_SYMH):
-                dwtMode = SYMH
-        elif (status == PYYAWT_SYMW):
-                dwtMode = SYMW
-        elif (status == PYYAWT_ASYMH):
-                dwtMode = ASYMH
-        elif (status == PYYAWT_ASYMW):
-                dwtMode = ASYMW
-        elif (status == PYYAWT_SP0):
-                dwtMode = SP0
-        elif (status == PYYAWT_SP1):
-                dwtMode = SP1
-        elif (status == PYYAWT_PPD):
-                dwtMode = PPD
-        elif (status == PYYAWT_PER):
-                dwtMode = PER
-        setdwtMode(dwtMode)
+def _dwtWrite(char* mode):
+        cdef int errCode
+        dwt_write(mode, &errCode)
+        #cdef int dwtMode
+        #if (status == PYYAWT_ZPD):
+                #dwtMode = ZPD
+        #elif (status == PYYAWT_SYMH):
+                #dwtMode = SYMH
+        #elif (status == PYYAWT_SYMW):
+                #dwtMode = SYMW
+        #elif (status == PYYAWT_ASYMH):
+                #dwtMode = ASYMH
+        #elif (status == PYYAWT_ASYMW):
+                #dwtMode = ASYMW
+        #elif (status == PYYAWT_SP0):
+                #dwtMode = SP0
+        #elif (status == PYYAWT_SP1):
+                #dwtMode = SP1
+        #elif (status == PYYAWT_PPD):
+                #dwtMode = PPD
+        #elif (status == PYYAWT_PER):
+                #dwtMode = PER
+        #setdwtMode(dwtMode)
+        return errCode

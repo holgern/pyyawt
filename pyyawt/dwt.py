@@ -440,9 +440,13 @@ def dwtmode(mode=None, nodisp=None):
         elif (dwtmode == PYYAWT_PER):
             print("**     DWT Extension Mode: Periodization    **\n")
     elif (np.any(mode == modes)):
-        _dwtWrite(mode)
+        errCode = _dwtWrite(mode_strings[np.where(mode == modes)[0]].encode())
+        if (errCode > 0):
+            raise Exception("DWT Extension Mode error")
     elif (np.any(mode == mode_strings)):
-        _dwtWrite(modes[np.where(mode == mode_strings)[0]])
+        errCode = _dwtWrite(mode.encode())
+        if (errCode > 0):
+            raise Exception("DWT Extension Mode error")        
     elif (mode == "status" and nodisp == "nodisp"):
         dwtmode = _getdwtMode()
         modestr = ""
