@@ -29,6 +29,11 @@
    return dwtMode;
  }
 
+ void setdwtMode(extend_method mode){
+   dwtMode = mode;
+   return;
+ }
+
 void
 filter_clear ()
 {

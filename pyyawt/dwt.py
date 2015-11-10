@@ -12,7 +12,7 @@ import numpy as np
 import sys as sys
 from ._pyyawt import *
 
-__all__ = ['orthfilt', 'biorfilt', 'dbwavf', 'coifwavf', 'symwavf', 'legdwavf', 'biorwavf', 'rbiorwavf', 'wfilters']
+__all__ = ['orthfilt', 'biorfilt', 'dbwavf', 'coifwavf', 'symwavf', 'legdwavf', 'biorwavf', 'rbiorwavf', 'wfilters', 'wmaxlev', 'dwtmode']
 
 
 def orthfilt(w):
@@ -281,7 +281,7 @@ def wfilters(wname,filterType=None):
     [lo_d,hi_d,lo_r,hi_r]=wfilters('db2')
     """
     ret_family, ret_member = _wavelet_parser(wname.encode())
-    if (np.any(ret_family == [PYYAWT_FARRAS, PYYAWT_KINGSBURYQ, PYYAWT_NOT_DEFINED])):
+    if (np.any(ret_family == np.array([PYYAWT_FARRAS, PYYAWT_KINGSBURYQ, PYYAWT_NOT_DEFINED]))):
         raise Exception("Wrong wavelet name!")
     filterLength = _wfilters_length(wname.encode())
     Lo_D = np.zeros(filterLength,dtype=np.float64)
@@ -371,3 +371,97 @@ def wfilters(wname,filterType=None):
         return Hi_D, Hi_R
     else:
         raise Exception("Wrong input!")
+
+
+def wmaxlev(signalLength,wname):
+    """
+    wmaxlev is the maximum decompostion level calculation utility.
+
+    Parameters
+    ----------
+    signalLength: int
+          signal length
+
+    wname: str
+          wavelet name,  wavelet name, haar( "haar"), daubechies ("db1" to "db20"), coiflets ("coif1" to "coif5"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
+
+    Returns
+    -------
+    L: int
+          decomposition level
+
+    Examples
+    --------
+    L=wmaxlev(100,'db5')
+    """
+
+    if (np.size(signalLength) == 1):
+        filterLength = _wfilters_length(wname.encode())
+        stride, val = _wave_len_validate(signalLength,filterLength)
+        if (val == 0):
+            raise Exception("Unrecognized Input Pattern or parameter not valid for the algorithm! Please refer to help pages!\n")
+        return stride
+    elif (np.size(signalLength) == 2):
+        filterLength = _wfilters_length(wname.encode())
+        stride1, val1 = _wave_len_validate(signalLength[0],filterLength)
+        if (val1 == 0):
+            raise Exception("The wavelet you select is not appropriate for that row size of the matrix!\n")
+        stride2, val2 = _wave_len_validate(signalLength[1],filterLength)
+        if (val2 == 0):
+            raise Exception("The wavelet you select is not appropriate for that column size of the matrix!\n")
+
+        return np.min([stride1, stride2])
+    else:
+        return 0
+
+
+def dwtmode(mode=None, nodisp=None):
+    mode_strings = np.array(['zpd','symh', 'symw', 'asymh', 'asymw', 'sp0', 'sp1', 'ppd', 'per'])
+    modes = np.array([PYYAWT_ZPD, PYYAWT_SYMH, PYYAWT_SYMW, PYYAWT_ASYMH, PYYAWT_ASYMW, PYYAWT_SP0,
+                          PYYAWT_SP1, PYYAWT_PPD, PYYAWT_PER])
+    if (mode is None or mode == "status" and nodisp is None):
+        dwtmode = _getdwtMode()
+        if (dwtmode == PYYAWT_ZPD):
+            print("**     DWT Extension Mode: Zero Padding   **\n")
+        elif (dwtmode == PYYAWT_SYMH):
+            print("**     DWT Extension Mode: Half Symmetrization  **\n")
+        elif (dwtmode == PYYAWT_SYMW):
+            print("**     DWT Extension Mode: Whole Symmetrization **\n")
+        elif (dwtmode == PYYAWT_ASYMH):
+            print("**     DWT Extension Mode: Half Asymmetrization   **\n")
+        elif (dwtmode == PYYAWT_ASYMW):
+            print("**     DWT Extension Mode: Whole Asymmetrization   **\n")
+        elif (dwtmode == PYYAWT_SP0):
+            print("**     DWT Extension Mode: order 0 smooth padding  **\n")
+        elif (dwtmode == PYYAWT_SP1):
+            print("**     DWT Extension Mode: order 1 smooth padding  **\n")
+        elif (dwtmode == PYYAWT_PPD):
+            print("**     DWT Extension Mode: Periodic Padding**\n")
+        elif (dwtmode == PYYAWT_PER):
+            print("**     DWT Extension Mode: Periodization    **\n")
+    elif (np.any(mode == modes)):
+        _dwtWrite(mode)
+    elif (np.any(mode == mode_strings)):
+        _dwtWrite(modes[np.where(mode == mode_strings)[0]])
+    elif (mode == "status" and nodisp == "nodisp"):
+        dwtmode = _getdwtMode()
+        modestr = ""
+        if (dwtmode == PYYAWT_ZPD):
+            modestr = 'zpd'
+        elif (dwtmode == PYYAWT_SYMH):
+            modestr = 'symh'
+        elif (dwtmode == PYYAWT_SYMW):
+            modestr = 'symw'
+        elif (dwtmode == PYYAWT_ASYMH):
+            modestr = 'asymh'
+        elif (dwtmode == PYYAWT_ASYMW):
+            modestr = 'asymw'
+        elif (dwtmode == PYYAWT_SP0):
+            modestr = 'sp0'
+        elif (dwtmode == PYYAWT_SP1):
+            modestr = 'sp1'
+        elif (dwtmode == PYYAWT_PPD):
+            modestr = 'ppd'
+        elif (dwtmode == PYYAWT_PER):
+            modestr = 'per'
+        return modestr

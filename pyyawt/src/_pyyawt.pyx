@@ -6,10 +6,12 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "PYYAWT_SPLINE_BIORTH", "PYYAWT_BEYLKIN", "PYYAWT_VAIDYANATHAN", "PYYAWT_DMEY",
         "PYYAWT_BATHLETS", "PYYAWT_LEGENDRE", "PYYAWT_SPLINE_RBIORTH", "PYYAWT_FARRAS",
         "PYYAWT_KINGSBURYQ", "PYYAWT_NOT_DEFINED", "PYYAWT_ORTH", "PYYAWT_BIORTH",
+        "PYYAWT_ZPD", "PYYAWT_SYMH", "PYYAWT_SYMW", "PYYAWT_ASYMH", "PYYAWT_ASYMW",
+        "PYYAWT_SP0", "PYYAWT_SP1", "PYYAWT_PPD", "PYYAWT_PER",
         "_wavelet_parser", "_dbwavf","_coifwavf","_symwavf", "_legdwavf", "_biorwavf",  "_rbiorwavf",
         "_wfilters_length", "_conv", "_orthfilt", "_biorfilt","_haarwavf",
         "_beylkinwavf", "_vaidyanathanwavf", "_dmeywavf", "_bathletswavf", "_legendrewavf",
-        "_farraswavf", "_kingsburyqwavf"]
+        "_farraswavf", "_kingsburyqwavf", "_wave_len_validate", "_getdwtMode", "_dwtWrite"]
 
 
 from c_pyyawt cimport *
@@ -38,12 +40,28 @@ PYYAWT_NOT_DEFINED = NOT_DEFINED
 PYYAWT_ORTH = ORTH
 PYYAWT_BIORTH = BIORTH
 
+PYYAWT_ZPD = 0
+PYYAWT_SYMH = 1
+PYYAWT_SYMW = 2
+PYYAWT_ASYMH = 3
+PYYAWT_ASYMW = 4
+PYYAWT_SP0 = 5
+PYYAWT_SP1 = 6
+PYYAWT_PPD = 7
+PYYAWT_PER = 8
+
 
 def _wavelet_parser(char *wname):
         cdef int ret_family = -1
         cdef int ret_member = -1
         wavelet_parser(wname, &ret_family, &ret_member)
         return ret_family, ret_member
+
+def _wave_len_validate(int sigInLen, int waveLength):
+        cdef int lev = -1
+        cdef int val = -1
+        wave_len_validate(sigInLen, waveLength, &lev, &val)
+        return lev, val
 
 def _dbwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] sigbuf):
         cdef int ret_family
@@ -210,6 +228,7 @@ def _wfilters_length(char *wname):
                 farras_synthesis_initialize(ret_member,&thisptr)
         elif (ret_family == KINGSBURYQ):
                 kingsburyq_synthesis_initialize(ret_member,&thisptr)
+        filter_clear()
         return thisptr.length
 
         
@@ -429,4 +448,43 @@ def _kingsburyqwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim
                 verbatim_copy (thisptr.pHiPass, m2*n2, <double*>sigbuf.data, m2*n2)
         filter_clear()
 
+def _getdwtMode():
+        if (getdwtMode() == ZPD):
+                return PYYAWT_ZPD
+        elif (getdwtMode() == SYMH):
+                return PYYAWT_SYMH
+        elif (getdwtMode() == SYMW):
+                return PYYAWT_SYMW
+        elif (getdwtMode() == ASYMH):
+                return PYYAWT_ASYMH
+        elif (getdwtMode() == ASYMW):
+                return PYYAWT_ASYMW
+        elif (getdwtMode() == SP0):
+                return PYYAWT_SP0
+        elif (getdwtMode() == SP1):
+                return PYYAWT_SP1
+        elif (getdwtMode() == PPD):
+                return PYYAWT_PPD
+        elif (getdwtMode() == PER):
+                return PYYAWT_PER
 
+def _dwtWrite(status):
+        setdwtMode(status)
+        #if (status == PYYAWT_ZPD):
+                #setdwtMode(ZPD)
+        #elif (status == PYYAWT_SYMH):
+                #setdwtMode(SYMH)
+        #elif (status == PYYAWT_SYMW):
+                #setdwtMode(SYMW)
+        #elif (status == PYYAWT_ASYMH):
+                #setdwtMode(ASYMH)
+        #elif (status == PYYAWT_ASYMW):
+                #setdwtMode(ASYMW)
+        #elif (status == PYYAWT_SP0):
+                #setdwtMode(SP0)
+        #elif (status == PYYAWT_SP1):
+                #setdwtMode(SP1)
+        #elif (status == PYYAWT_PPD):
+                #setdwtMode(PPD)
+        #elif (status == PYYAWT_PER):
+                #setdwtMode(PER)

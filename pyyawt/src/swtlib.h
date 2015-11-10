@@ -687,6 +687,7 @@ extern "C" {
              void wave_len_validate (int sigInLen, int waveLength, int *lev, int *val);
 
              extend_method getdwtMode();
+	     void setdwtMode(extend_method mode);
              void dwt_write (char *mode, int *errCode);
              void dwt_parse(char **strr);
              void dwt (double *sigIn, int sigInLength, double *lowDe,
