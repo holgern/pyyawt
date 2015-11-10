@@ -446,7 +446,7 @@ def dwtmode(mode=None, nodisp=None):
     elif (np.any(mode == mode_strings)):
         errCode = _dwtWrite(mode.encode())
         if (errCode > 0):
-            raise Exception("DWT Extension Mode error")        
+            raise Exception("DWT Extension Mode error")
     elif (mode == "status" and nodisp == "nodisp"):
         dwtmode = _getdwtMode()
         modestr = ""
