@@ -107,7 +107,7 @@ def dbwavf(wname):
     if (ret[0] != PYYAWT_DAUBECHIES):
         raise Exception("Wrong wavelet name!")
     lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
-    _dbwavf(wname.encode(),'Lo_R',lowPass)
+    _dbwavf(wname.encode(),b'Lo_R',lowPass)
     return lowPass
 
 
@@ -133,7 +133,7 @@ def coifwavf(wname):
     if (ret[0] != PYYAWT_COIFLETS):
         raise Exception("Wrong wavelet name!")
     lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
-    _coifwavf(wname.encode(),'Lo_R',lowPass)
+    _coifwavf(wname.encode(),b'Lo_R',lowPass)
     return lowPass
 
 
@@ -159,7 +159,7 @@ def symwavf(wname):
     if (ret[0] != PYYAWT_SYMLETS):
         raise Exception("Wrong wavelet name!")
     lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
-    _symwavf(wname.encode(),'Lo_R',lowPass)
+    _symwavf(wname.encode(),b'Lo_R',lowPass)
     return lowPass
 
 
@@ -185,7 +185,7 @@ def legdwavf(wname):
     if (ret[0] != PYYAWT_LEGENDRE):
         raise Exception("Wrong wavelet name!")
     lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
-    _legdwavf(wname.encode(),'Lo_R',lowPass)
+    _legdwavf(wname.encode(),b'Lo_R',lowPass)
     return lowPass
 
 
@@ -214,8 +214,8 @@ def biorwavf(wname):
     filterLength = _wfilters_length(wname.encode())
     RF = np.zeros(filterLength, dtype=np.float64)
     DF = np.zeros(filterLength, dtype=np.float64)
-    _biorwavf(wname.encode(),'Lo_R',False,RF)
-    _biorwavf(wname.encode(),'Lo_D',True,DF)
+    _biorwavf(wname.encode(),b'Lo_R',False,RF)
+    _biorwavf(wname.encode(),b'Lo_D',True,DF)
     return RF,DF
 
 
@@ -243,8 +243,8 @@ def rbiorwavf(wname):
         raise Exception("Wrong wavelet name!")
     RF = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
     DF = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
-    _rbiorwavf(wname.encode(),'Lo_R',False,RF)
-    _rbiorwavf(wname.encode(),'Lo_D',True,DF)
+    _rbiorwavf(wname.encode(),b'Lo_R',False,RF)
+    _rbiorwavf(wname.encode(),b'Lo_D',True,DF)
     return RF,DF
 
 
