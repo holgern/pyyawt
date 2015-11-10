@@ -11,28 +11,28 @@ import pyyawt
 
 
 class TestWfilters(unittest.TestCase):
-    #def test_haar(self):
-        #Lo_D,Hi_D,Lo_R,Hi_R = pyyawt.wfilters('haar')
-        #w = pyyawt.dbwavf('db1')
-        #lo_d,hi_d,lo_r,hi_r = pyyawt.orthfilt(w)
-        #np.testing.assert_almost_equal(lo_d, Lo_D)
-        #np.testing.assert_almost_equal(lo_r, Lo_R)
-        #np.testing.assert_almost_equal(hi_d, Hi_D)
-        #np.testing.assert_almost_equal(hi_r, Hi_R)
+    def test_haar(self):
+        Lo_D,Hi_D,Lo_R,Hi_R = pyyawt.wfilters('haar')
+        w = pyyawt.dbwavf('db1')
+        lo_d,hi_d,lo_r,hi_r = pyyawt.orthfilt(w)
+        np.testing.assert_almost_equal(lo_d, Lo_D)
+        np.testing.assert_almost_equal(lo_r, Lo_R)
+        np.testing.assert_almost_equal(hi_d, Hi_D)
+        np.testing.assert_almost_equal(hi_r, Hi_R)
 
-        #Lo_D,Hi_D = pyyawt.wfilters('haar','d')
-        #Lo_R,Hi_R = pyyawt.wfilters('haar','r')
-        #np.testing.assert_almost_equal(lo_d, Lo_D)
-        #np.testing.assert_almost_equal(lo_r, Lo_R)
-        #np.testing.assert_almost_equal(hi_d, Hi_D)
-        #np.testing.assert_almost_equal(hi_r, Hi_R)
+        Lo_D,Hi_D = pyyawt.wfilters('haar','d')
+        Lo_R,Hi_R = pyyawt.wfilters('haar','r')
+        np.testing.assert_almost_equal(lo_d, Lo_D)
+        np.testing.assert_almost_equal(lo_r, Lo_R)
+        np.testing.assert_almost_equal(hi_d, Hi_D)
+        np.testing.assert_almost_equal(hi_r, Hi_R)
 
-        #Lo_D,Lo_R = pyyawt.wfilters('haar','l')
-        #Hi_D,Hi_R = pyyawt.wfilters('haar','h')
-        #np.testing.assert_almost_equal(lo_d, Lo_D)
-        #np.testing.assert_almost_equal(lo_r, Lo_R)
-        #np.testing.assert_almost_equal(hi_d, Hi_D)
-        #np.testing.assert_almost_equal(hi_r, Hi_R)
+        Lo_D,Lo_R = pyyawt.wfilters('haar','l')
+        Hi_D,Hi_R = pyyawt.wfilters('haar','h')
+        np.testing.assert_almost_equal(lo_d, Lo_D)
+        np.testing.assert_almost_equal(lo_r, Lo_R)
+        np.testing.assert_almost_equal(hi_d, Hi_D)
+        np.testing.assert_almost_equal(hi_r, Hi_R)
 
     def test_dbwavf(self):
         for N in np.arange(1,37):

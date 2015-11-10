@@ -106,7 +106,7 @@ def dbwavf(wname):
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != PYYAWT_DAUBECHIES):
         raise Exception("Wrong wavelet name!")
-    lowPass = np.zeros(_dbwavf_length(wname.encode()),dtype=np.float64)
+    lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
     _dbwavf(wname.encode(),'Lo_R',lowPass)
     return lowPass
 
@@ -132,7 +132,7 @@ def coifwavf(wname):
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != PYYAWT_COIFLETS):
         raise Exception("Wrong wavelet name!")
-    lowPass = np.zeros(_coifwavf_length(wname.encode()),dtype=np.float64)
+    lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
     _coifwavf(wname.encode(),'Lo_R',lowPass)
     return lowPass
 
@@ -158,7 +158,7 @@ def symwavf(wname):
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != PYYAWT_SYMLETS):
         raise Exception("Wrong wavelet name!")
-    lowPass = np.zeros(_symwavf_length(wname.encode()),dtype=np.float64)
+    lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
     _symwavf(wname.encode(),'Lo_R',lowPass)
     return lowPass
 
@@ -184,7 +184,7 @@ def legdwavf(wname):
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != PYYAWT_LEGENDRE):
         raise Exception("Wrong wavelet name!")
-    lowPass = np.zeros(_legdwavf_length(wname.encode()),dtype=np.float64)
+    lowPass = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
     _legdwavf(wname.encode(),'Lo_R',lowPass)
     return lowPass
 
@@ -211,10 +211,11 @@ def biorwavf(wname):
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != PYYAWT_SPLINE_BIORTH):
         raise Exception("Wrong wavelet name!")
-    RF = np.zeros(_biorwavf_length(wname.encode()),dtype=np.float64)
-    DF = np.zeros(_biorwavf_length(wname.encode()),dtype=np.float64)
-    _biorwavf(wname.encode(),'Lo_R',RF)
-    _biorwavf(wname.encode(),'Lo_D',DF)
+    filterLength = _wfilters_length(wname.encode())
+    RF = np.zeros(filterLength, dtype=np.float64)
+    DF = np.zeros(filterLength, dtype=np.float64)
+    _biorwavf(wname.encode(),'Lo_R',False,RF)
+    _biorwavf(wname.encode(),'Lo_D',True,DF)
     return RF,DF
 
 
@@ -240,10 +241,10 @@ def rbiorwavf(wname):
     ret = _wavelet_parser(wname.encode())
     if (ret[0] != PYYAWT_SPLINE_RBIORTH):
         raise Exception("Wrong wavelet name!")
-    RF = np.zeros(_rbiorwavf_length(wname.encode()),dtype=np.float64)
-    DF = np.zeros(_rbiorwavf_length(wname.encode()),dtype=np.float64)
-    _rbiorwavf(wname.encode(),'Lo_R',RF)
-    _rbiorwavf(wname.encode(),'Lo_D',DF)
+    RF = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
+    DF = np.zeros(_wfilters_length(wname.encode()),dtype=np.float64)
+    _rbiorwavf(wname.encode(),'Lo_R',False,RF)
+    _rbiorwavf(wname.encode(),'Lo_D',True,DF)
     return RF,DF
 
 
@@ -303,40 +304,55 @@ def wfilters(wname,filterType=None):
         _symwavf(wname.encode(),b'Lo_R',Lo_R)
         _symwavf(wname.encode(),b'Hi_R',Hi_R)
     elif (ret_family == PYYAWT_SPLINE_BIORTH):
-        _biorwavf(wname.encode(),b'Lo_D',Lo_D)
-        _biorwavf(wname.encode(),b'Hi_D',Hi_D)
-        _biorwavf(wname.encode(),b'Lo_R',Lo_R)
-        _biorwavf(wname.encode(),b'Hi_R',Hi_R)
+        _biorwavf(wname.encode(),b'Lo_D',False,Lo_D)
+        _biorwavf(wname.encode(),b'Hi_D',False,Hi_D)
+        _biorwavf(wname.encode(),b'Lo_R',False,Lo_R)
+        _biorwavf(wname.encode(),b'Hi_R',False,Hi_R)
     elif (ret_family == PYYAWT_BEYLKIN):
-        _symwavf(wname.encode(),b'Lo_D',Lo_D)
-        _symwavf(wname.encode(),b'Hi_D',Hi_D)
-        _symwavf(wname.encode(),b'Lo_R',Lo_R)
-        _symwavf(wname.encode(),b'Hi_R',Hi_R)
+        _beylkinwavf(wname.encode(),b'Lo_D',Lo_D)
+        _beylkinwavf(wname.encode(),b'Hi_D',Hi_D)
+        _beylkinwavf(wname.encode(),b'Lo_R',Lo_R)
+        _beylkinwavf(wname.encode(),b'Hi_R',Hi_R)
     elif (ret_family == PYYAWT_VAIDYANATHAN):
-        _symwavf(wname.encode(),b'Lo_D',Lo_D)
-        _symwavf(wname.encode(),b'Hi_D',Hi_D)
-        _symwavf(wname.encode(),b'Lo_R',Lo_R)
-        _symwavf(wname.encode(),b'Hi_R',Hi_R)
+        _vaidyanathanwavf(wname.encode(),b'Lo_D',Lo_D)
+        _vaidyanathanwavf(wname.encode(),b'Hi_D',Hi_D)
+        _vaidyanathanwavf(wname.encode(),b'Lo_R',Lo_R)
+        _vaidyanathanwavf(wname.encode(),b'Hi_R',Hi_R)
     elif (ret_family == PYYAWT_DMEY):
-        _symwavf(wname.encode(),b'Lo_D',Lo_D)
-        _symwavf(wname.encode(),b'Hi_D',Hi_D)
-        _symwavf(wname.encode(),b'Lo_R',Lo_R)
-        _symwavf(wname.encode(),b'Hi_R',Hi_R)
+        _dmeywavf(wname.encode(),b'Lo_D',Lo_D)
+        _dmeywavf(wname.encode(),b'Hi_D',Hi_D)
+        _dmeywavf(wname.encode(),b'Lo_R',Lo_R)
+        _dmeywavf(wname.encode(),b'Hi_R',Hi_R)
+    elif (ret_family == PYYAWT_BATHLETS):
+        _bathletswavf(wname.encode(),b'Lo_D',Lo_D)
+        _bathletswavf(wname.encode(),b'Hi_D',Hi_D)
+        _bathletswavf(wname.encode(),b'Lo_R',Lo_R)
+        _bathletswavf(wname.encode(),b'Hi_R',Hi_R)
     elif (ret_family == PYYAWT_LEGENDRE):
-        _symwavf(wname.encode(),b'Lo_D',Lo_D)
-        _symwavf(wname.encode(),b'Hi_D',Hi_D)
-        _symwavf(wname.encode(),b'Lo_R',Lo_R)
-        _symwavf(wname.encode(),b'Hi_R',Hi_R)
+        _legendrewavf(wname.encode(),b'Lo_D',Lo_D)
+        _legendrewavf(wname.encode(),b'Hi_D',Hi_D)
+        _legendrewavf(wname.encode(),b'Lo_R',Lo_R)
+        _legendrewavf(wname.encode(),b'Hi_R',Hi_R)
     elif (ret_family == PYYAWT_SPLINE_RBIORTH):
-        _rbiorwavf(wname.encode(),b'Lo_D',Lo_D)
-        _rbiorwavf(wname.encode(),b'Hi_D',Hi_D)
-        _rbiorwavf(wname.encode(),b'Lo_R',Lo_R)
-        _rbiorwavf(wname.encode(),b'Hi_R',Hi_R)
+        _rbiorwavf(wname.encode(),b'Lo_D',False,Lo_D)
+        _rbiorwavf(wname.encode(),b'Hi_D',False,Hi_D)
+        _rbiorwavf(wname.encode(),b'Lo_R',False,Lo_R)
+        _rbiorwavf(wname.encode(),b'Hi_R',False,Hi_R)
     elif (ret_family == PYYAWT_HAAR):
-        _dbwavf(b'db1',b'Lo_D',Lo_D)
-        _dbwavf(b'db1',b'Hi_D',Hi_D)
-        _dbwavf(b'db1',b'Lo_R',Lo_R)
-        _dbwavf(b'db1',b'Hi_R',Hi_R)        
+        _haarwavf(wname.encode(),b'Lo_D',Lo_D)
+        _haarwavf(wname.encode(),b'Hi_D',Hi_D)
+        _haarwavf(wname.encode(),b'Lo_R',Lo_R)
+        _haarwavf(wname.encode(),b'Hi_R',Hi_R)
+    elif (ret_family == PYYAWT_FARRAS):
+        _farraswavf(wname.encode(),b'Lo_D',Lo_D)
+        _farraswavf(wname.encode(),b'Hi_D',Hi_D)
+        _farraswavf(wname.encode(),b'Lo_R',Lo_R)
+        _farraswavf(wname.encode(),b'Hi_R',Hi_R)
+    elif (ret_family == PYYAWT_KINGSBURYQ):
+        _kingsburyqwavf(wname.encode(),b'Lo_D',Lo_D)
+        _kingsburyqwavf(wname.encode(),b'Hi_D',Hi_D)
+        _kingsburyqwavf(wname.encode(),b'Lo_R',Lo_R)
+        _kingsburyqwavf(wname.encode(),b'Hi_R',Hi_R)
     # _wfilters(wname.encode(),Lo_D,Hi_D,Lo_R,Hi_R)
     if (filterType is None):
         flow = 1
