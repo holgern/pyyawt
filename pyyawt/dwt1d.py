@@ -56,7 +56,7 @@ def dwt(x,*args):
         stride, val = _wave_len_validate(x.shape[0],filterLength)
         if (val == 0):
             raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
-    
+
         m3 = 1
         m4 = 1
         n3 = np.floor((x.shape[0] + filterLength - 1)/2).astype(int)
@@ -71,7 +71,7 @@ def dwt(x,*args):
             dwtmode(args[2])
         _dwt_neo(x,Lo_D,Hi_D,out1,out2)
         if (len(args) == 3 and args[1] == 'mode'):
-            dwtmode(ST)        
+            dwtmode(ST)
         return out1, out2
     elif (len(args) == 2 or (len(args) == 3 and args[2] == 'mode')):
         # flow 1
@@ -81,7 +81,7 @@ def dwt(x,*args):
         stride, val = _wave_len_validate(x.shape[0],filterLength)
         if (val == 0):
             raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
-    
+
         m3 = 1
         m4 = 1
         n3 = np.floor((x.shape[0] + filterLength - 1)/2).astype(int)
@@ -95,7 +95,11 @@ def dwt(x,*args):
             dwtmode(args[2])
         _dwt_neo(x,Lo_D,Hi_D,out1,out2)
         if (len(args) == 3 and args[1] == 'mode'):
-            dwtmode(ST)        
+            dwtmode(ST)
         return out1, out2
     else:
         raise Exception("Wrong input!")
+
+
+def idwt(cA, cD, *args):
+    raise Exception("Wrong input!")
