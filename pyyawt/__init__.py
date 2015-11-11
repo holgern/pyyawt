@@ -15,6 +15,11 @@ from .dwt import *
 from .utility import *
 from ._pyyawt import *
 from .dwt1d import *
+from .dwt2d import *
+from .dwt3d import *
+from .cowt import *
+from .cwt import *
+from .swt import *
 
 from pyyawt.version import version as __version__
 

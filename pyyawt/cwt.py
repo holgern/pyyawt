@@ -4,75 +4,75 @@
 # See COPYING for license details.
 
 """
-Helper function for pyyawt
+cwt function for wavelet denoising
 """
 
 from __future__ import division, print_function, absolute_import
 import numpy as np
 import sys as sys
 from ._pyyawt import *
+from .dwt import *
 
-__all__ = ['conv', 'iconv', 'wrev', 'qmf', 'dyaddown', 'dyadup', 'wkeep', 'wextend', 'wcodemat',
-           'mat3Dtran', 'wrev3', 'wrev2', 'wnorm', 'waveletfamilies']
-
-
-def conv(a,b):
-    m1,n1 = a.shape
-    m2,n2 = b.shape
-    m3 = 1
-    n3 = m1 * n1 + m2 * n2 - 1
-    Y = np.zeros((m3,n3),dtype=np.float64)
-    _conv(a,b,Y)
-    return Y
+__all__ = ['sinus', 'poisson', 'mexihat', 'morlet', 'DOGauss', 'Gauswavf', 'shanwavf',
+           'cmorlet', 'fbspwavf', 'cauchy', 'cgauss', 'meyer', 'meyeraux', 'wavefun',
+           'wavefun2']
 
 
-def iconv(*args):
+def sinus(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wrev(*args):
+def poisson(*args):
     raise Exception("Not yet implemented!!")
 
 
-def qmf(*args):
+def mexihat(*args):
     raise Exception("Not yet implemented!!")
 
 
-def dyaddown(*args):
+def morlet(*args):
     raise Exception("Not yet implemented!!")
 
 
-def dyadup(*args):
+def DOGauss(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wkeep(*args):
+def Gauswavf(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wextend(*args):
+def shanwavf(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wcodemat(*args):
+def cmorlet(*args):
     raise Exception("Not yet implemented!!")
 
 
-def mat3Dtran(*args):
+def fbspwavf(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wrev3(*args):
+def cauchy(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wrev2(*args):
+def cgauss(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wnorm(*args):
+def meyer(*args):
     raise Exception("Not yet implemented!!")
 
 
-def waveletfamilies(*args):
+def meyeraux(*args):
+    raise Exception("Not yet implemented!!")
+
+
+def wavefun(*args):
+    raise Exception("Not yet implemented!!")
+
+
+def wavefun2(*args):
     raise Exception("Not yet implemented!!")

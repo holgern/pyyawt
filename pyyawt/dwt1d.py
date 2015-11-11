@@ -13,7 +13,8 @@ import sys as sys
 from ._pyyawt import *
 from .dwt import *
 
-__all__ = ['dwt', 'idwt']
+__all__ = ['dwt', 'idwt', 'wavedec', 'waverec', 'wrcoef', 'appcoef', 'detcoef', 'wenergy',
+           'upcoef', 'upwlev']
 
 
 def dwt(x,*args):
@@ -102,4 +103,36 @@ def dwt(x,*args):
 
 
 def idwt(cA, cD, *args):
-    raise Exception("Wrong input!")
+    raise Exception("Not yet implemented!!")
+
+
+def wavedec(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def waverec(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def wrcoef(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def appcoef(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def detcoef(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def wenergy(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def upcoef(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
+
+
+def upwlev(cA, cD, *args):
+    raise Exception("Not yet implemented!!")
