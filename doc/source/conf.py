@@ -50,7 +50,7 @@ project = 'PyYAWT'
 # other places throughout the built documents.
 # import pyyawt
 # version = re.sub(r'\.dev0+.*$', r'.dev', pyyawt.__version__)
-version = 0.1.1
+version = "0.1.1"
 # release = pyyawt.__version__
 
 print "PyYAWT (VERSION %s)" % (version,)
