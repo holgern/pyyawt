@@ -16,9 +16,9 @@ cdef extern from "swtlib.h":
             char extMethodName[6]
             extend_method extMethod
             
-      ctypedef struct  str_error_notification:
-            int   errorNumber;
-            char  message[150];
+      # ctypedef struct  str_error_notification:
+      #      int   errorNumber;
+      #      char  message[150];
             
       ctypedef void(*WScaleFunc)(double *x, int sigInLength, double *psi, int sigOutLength, double ys);
       
