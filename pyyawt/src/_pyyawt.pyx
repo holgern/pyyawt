@@ -12,7 +12,7 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_wfilters_length", "_conv", "_orthfilt", "_biorfilt","_haarwavf",
         "_beylkinwavf", "_vaidyanathanwavf", "_dmeywavf", "_bathletswavf", "_legendrewavf",
         "_farraswavf", "_kingsburyqwavf", "_wave_len_validate", "_getdwtMode", "_dwtWrite",
-        "_dwt_neo"]
+        "_dwt_neo","_qmf_odd","_qmf_even"]
 
 
 from c_pyyawt cimport *
@@ -509,3 +509,23 @@ def _dwt_neo(np.ndarray[np.float64_t, ndim=1] input1, np.ndarray[np.float64_t, n
         n4 = output1.shape[0]
 
         dwt_neo (<double*>input1.data, m1*n1, <double*>input2.data,  <double*>input3.data,m3*n3,  <double*>output1.data, <double*>output2.data, m4*n4, getdwtMode());
+        
+def _qmf_odd(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        qmf_odd (<double*>input.data, m1*n1, <double*>output.data, m2*n2)
+
+def _qmf_even(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        qmf_even (<double*>input.data, m1*n1, <double*>output.data, m2*n2);

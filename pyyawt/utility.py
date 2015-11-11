@@ -34,8 +34,45 @@ def wrev(*args):
     raise Exception("Not yet implemented!!")
 
 
-def qmf(*args):
-    raise Exception("Not yet implemented!!")
+def qmf(x,even_odd=None):
+    """
+    quadrature mirror
+
+    Calling Sequence
+    ---------------
+    Y=qmf(x,[EVEN_ODD])
+
+    Parameters
+    ----------
+    x: double vector
+    EVEN_ODD: even or odd integer
+
+    Returns
+    -------
+    Y: quadrature mirror
+
+    Description
+    -----------
+    qmf is a quadrature mirror utility function on time domain. If EVEN_ODD is an even integer, output would be reversed version of input with even index entries sign changed. Otherwise, odd index entries will be changed. Default is even.
+
+    Examples
+    --------
+    a=np.random.rand(3)
+    Y=qmf(a)
+    """
+    if (np.size(x.shape) == 1):
+        x.shape = (x.shape[0], 1)
+    (m1, n1) = x.shape
+    output1 = np.zeros((m1,n1),dtype=np.float64)
+    if (even_odd is None):
+        _qmf_even(x, output1)
+        return output1
+    else:
+        if ((even_odd % 2) == 0):
+            _qmf_even(x, output1)
+        else:
+            _qmf_odd(x, output1)
+        return output1
 
 
 def dyaddown(*args):
