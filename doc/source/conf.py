@@ -48,9 +48,10 @@ project = 'PyYAWT'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
-import pyyawt
-version = re.sub(r'\.dev0+.*$', r'.dev', pyyawt.__version__)
-release = pyyawt.__version__
+# import pyyawt
+# version = re.sub(r'\.dev0+.*$', r'.dev', pyyawt.__version__)
+version = 0.1.1
+# release = pyyawt.__version__
 
 print "PyYAWT (VERSION %s)" % (version,)
 
