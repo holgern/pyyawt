@@ -8,17 +8,16 @@ import numpy as np
 import sys
 import unittest
 import pyyawt
-import h5py
 
 
 class TestDwt(unittest.TestCase):
     def setUp(self):
         data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        test_data_file = os.path.join(data_dir, 'Data.bin')
-        demoFile = h5py.File(test_data_file, 'r')
-        self.x1 = np.array(demoFile["x1"])
-        self.x2 = np.array(demoFile["x2"])
-        self.s1 = np.array(demoFile["s1"])
+        test_data_file = os.path.join(data_dir, 'Data.npz')
+        testFile = np.load(test_data_file)
+        self.x1 = testFile["x1"]
+        self.x2 = testFile["x2"]
+        self.s1 = testFile["s1"]
 
     def test_haar(self):
         s1 = self.s1
