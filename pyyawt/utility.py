@@ -17,12 +17,23 @@ __all__ = ['conv', 'iconv', 'wrev', 'qmf', 'dyaddown', 'dyadup', 'wkeep', 'wexte
 
 
 def conv(a,b):
+    n1_orig = 0
+    if (np.size(a.shape) == 1):
+        n1_orig = a.shape[0]
+        a.shape = (1, n1_orig)
     m1,n1 = a.shape
+
+    n2_orig = 0
+    if (np.size(b.shape) == 1):
+        n2_orig = b.shape[0]
+        b.shape = (1, n2_orig)
     m2,n2 = b.shape
     m3 = 1
     n3 = m1 * n1 + m2 * n2 - 1
     Y = np.zeros((m3,n3),dtype=np.float64)
     _conv(a,b,Y)
+    if (n1_orig > 0):
+        Y = Y.flatten()
     return Y
 
 

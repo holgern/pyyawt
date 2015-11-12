@@ -25,19 +25,122 @@ class TestDwt(unittest.TestCase):
         x2 = self.x2
         [cA,cD] = pyyawt.dwt(x1,'haar')
         [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters('haar')
-        # caa=pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,len(Lo_D),'b'),Lo_D),(len(x1)+len(Lo_D)-1)))
-        # cdd=pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,len(Lo_D),'b'),Hi_D),(len(x1)+len(Lo_D)-1)));
-        # np.testing.assert_almost_equal(caa, cA)
-        # np.testing.assert_almost_equal(cdd , cD)
+        caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1)+np.size(Lo_D)-1)))
+        cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1)+np.size(Lo_D)-1)))
+        np.testing.assert_almost_equal(caa.flatten(), cA)
+        np.testing.assert_almost_equal(cdd.flatten(), cD)
 
         [cA,cD] = pyyawt.dwt(x2,'haar')
-        # caa=dyaddown(wkeep(conv(wextend(1,'symh',x2,length(Lo_D),'b'),Lo_D),(length(x2)+length(Lo_D)-1)));
-        # cdd=dyaddown(wkeep(conv(wextend(1,'symh',x2,length(Lo_D),'b'),Hi_D),(length(x2)+length(Lo_D)-1)));
-        # np.testing.assert_almost_equal( caa , cA)
-        # np.testing.assert_almost_equal( cdd , cD)
+        caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2)+np.size(Lo_D)-1)))
+        cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2)+np.size(Lo_D)-1)))
+        np.testing.assert_almost_equal(caa.flatten(), cA)
+        np.testing.assert_almost_equal(cdd.flatten(), cD)
+
         [cA,cD] = pyyawt.dwt(s1,'haar')
-        # caa=dyaddown(wkeep(conv(wextend(1,'symh',s1,length(Lo_D),'b'),Lo_D),(length(s1)+length(Lo_D)-1)));
-        # cdd=dyaddown(wkeep(conv(wextend(1,'symh',s1,length(Lo_D),'b'),Hi_D),(length(s1)+length(Lo_D)-1)));
-        # np.testing.assert_almost_equal(caa , cA)
-        # np.testing.assert_almost_equal(cdd , cD)
-        np.testing.assert_almost_equal(1,1)
+        caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1)+np.size(Lo_D)-1)))
+        cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
+        np.testing.assert_almost_equal(caa.flatten(), cA)
+        np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+    def test_db(self):
+        s1 = self.s1
+        x1 = self.x1
+        x2 = self.x2
+        for N in np.arange(1,31):
+            wname = "db" + str(N)
+            [cA,cD] = pyyawt.dwt(x1,wname)
+            [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters(wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(x2,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(s1,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+    def test_coif(self):
+        s1 = self.s1
+        x1 = self.x1
+        x2 = self.x2
+        for N in np.arange(1,11):
+            wname = "coif" + str(N)
+            [cA,cD] = pyyawt.dwt(x1,wname)
+            [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters(wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(x2,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(s1,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+    def test_sym(self):
+        s1 = self.s1
+        x1 = self.x1
+        x2 = self.x2
+        for N in np.arange(4,11):
+            wname = "sym" + str(N)
+            [cA,cD] = pyyawt.dwt(x1,wname)
+            [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters(wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(x2,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(s1,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+    def test_bior(self):
+        s1 = self.s1
+        x1 = self.x1
+        x2 = self.x2
+        wnames = ['bior1.1', 'bior1.3', 'bior1.5', 'bior2.2', 'bior2.4', 'bior2.6',
+                  'bior2.8', 'bior3.1', 'bior3.3', 'bior3.5', 'bior3.7', 'bior3.9',
+                  'bior4.4', 'bior5.5', 'bior6.8']
+        for N in np.arange(1,13):
+            wname = wnames[N]
+            [cA,cD] = pyyawt.dwt(x1,wname)
+            [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters(wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(x2,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(s1,wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
