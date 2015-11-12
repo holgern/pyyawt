@@ -191,22 +191,18 @@ wave_len_validate (int sigInLen, int waveLength, int *lev, int *val)
 
 
 
-void
-char_to_extend_method(char *mode, extend_method *extMethod, int *errCode)
+extend_method
+char_to_extend_method(char *mode)
 {
   int count;
-  *errCode = UNKNOWN_INPUT_ERR;
-
   for (count=0;count<extensionIdentityNum;count++)
     {
       if (strcmp(mode,ei[count].extMethodName) == 0)
 	{
-	  *extMethod = ei[count].extMethod;
-	  *errCode = SUCCESS;
-	  break;
+	  return ei[count].extMethod;
 	}
     }
-  return;
+  return 0;
 }
 
 void
