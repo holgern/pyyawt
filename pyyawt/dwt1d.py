@@ -49,6 +49,7 @@ def dwt(x,*args):
     --------
     cA,cD=dwt(x,'db2','mode','asymh')
     """
+    x = x.flatten()
     if (len(args) == 1 or (len(args) == 3 and args[1] == 'mode')):
         # flow 1
         wname = args[0]

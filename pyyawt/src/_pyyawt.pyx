@@ -12,7 +12,8 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_wfilters_length", "_conv", "_orthfilt", "_biorfilt","_haarwavf",
         "_beylkinwavf", "_vaidyanathanwavf", "_dmeywavf", "_bathletswavf", "_legendrewavf",
         "_farraswavf", "_kingsburyqwavf", "_wave_len_validate", "_getdwtMode", "_dwtWrite",
-        "_dwt_neo","_qmf_odd","_qmf_even"]
+        "_dwt_neo","_qmf_odd","_qmf_even", "_wkeep_1D_center", "_wkeep_1D_left", "_wkeep_1D_right",
+        "_wkeep_1D_index", "_wkeep_2D_center", "_wkeep_2D_index"]
 
 
 from c_pyyawt cimport *
@@ -528,4 +529,64 @@ def _qmf_even(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, n
         m2 = output.shape[0]
         n2 = output.shape[1]
 
-        qmf_even (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        qmf_even (<double*>input.data, m1*n1, <double*>output.data, m2*n2)
+
+def _wkeep_1D_center(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        wkeep_1D_center (<double*>input.data, m1*n1, <double*>output.data, m2*n2)
+
+def _wkeep_1D_left(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        wkeep_1D_left (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        
+def _wkeep_1D_right(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        wkeep_1D_right (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        
+def _wkeep_1D_index(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output, first):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        wkeep_1D_index (<double*>input.data, m1*n1, <double*>output.data, m2*n2, first);
+
+def _wkeep_2D_center(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        wkeep_2D_center (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _wkeep_2D_index(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output, rowFirst, colFirst):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        wkeep_2D_index (<double*>input.data, m1, n1, <double*>output.data, m2, n2, rowFirst, colFirst)
