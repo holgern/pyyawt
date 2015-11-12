@@ -43,6 +43,7 @@ before_install:
   - travis_retry pip install --install-option="--no-cython-compile" Cython==0.23
   - travis_retry pip install $NUMPYSPEC
   - travis_retry pip install nose
+  - travis_retry pip install h5py
   - pip install coverage
   - pip install coveralls
   - python -V

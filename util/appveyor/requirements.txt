@@ -12,3 +12,4 @@ numpy==1.9.1
 Cython==0.23.2
 nose
 wheel
+h5py

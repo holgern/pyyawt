@@ -75,7 +75,27 @@ def qmf(x,even_odd=None):
         return output1
 
 
-def dyaddown(*args):
+def dyaddown(x,*args):
+    """
+    dyadic downsampling
+    Calling Sequence
+    Y=dyaddown(x,[EVEN_ODD])
+    Y=dyaddown(M,[EVEN_ODD],[type])
+    Y=dyaddown(M,[type],[EVEN_ODD])
+    Parameters
+    x : double vector
+    M : double matrix
+    EVEN_ODD : even or odd integer
+    type : downsampling manner, 'r' for row, 'c' for column, and 'm' for row and column simutaneously.
+    Y : downsampling result
+    Description
+    dyaddown is an utility function for dyadic downsampling. if EVEN_ODD is even, even index entries of input will be kept. Otherwise, odd index entries will be kept. Default is even. Optional argumet type is especially for matrix input downsampling.
+    Examples
+    a=np.random.rand((1,100))
+    Y=dyaddown(a)
+    b=np.random.rand((25,25))
+    Y=dyaddown(b,'r',0)
+    """
     raise Exception("Not yet implemented!!")
 
 
@@ -109,7 +129,37 @@ def wkeep(x,size,index=None):
     raise Exception("Not yet implemented!!")
 
 
-def wextend(*args):
+def wextend(dim,extMode,x,size,typeString=None):
+    """
+    signal extension
+    Calling Sequence
+    Y=wextend(onedim,extMode,x,L,[type])
+    Y=wextend(twodim,extMode,M,sizeVector,[typeStringVector])
+    Y=wextend(twodim,extMode,M,sizeVector,[typeString])
+    Y=wextend(twodim,extMode,M,L)
+    Y=wextend(row_col,extMode,M,L,[type])
+    Parameters
+    x : double vector
+    M : double matrix
+    L : length integer
+    type : extraction manner, 'l' for left, 'r' for right, and 'b' for both left and right
+    sizeVector : integer vector containing row and column size to extend
+    typeString : string for extension, 'bb', 'll', 'rr', 'bl', 'lb', 'br', 'rb', 'lr', 'rl'.
+    typeStringVector : string vector for extension, ['b' 'b'], ['l' 'l'], ['r' 'r'], ['b' 'l'], ['l' 'b'], ['b' 'r'], ['r' 'b'], ['r' 'l'], ['l' 'r'].
+    extMode : extension method, 'symh'('sym'), 'symw', 'asymh', 'asymw', 'zpd', 'zpd', 'per', 'ppd'.
+    row_col : adding row or adding column, 'ar' or 'addrow' for row, 'ac' or 'addcol' for column.
+    onedim : one dimension indication, 1, '1', '1d' and '1D'
+    twodim : two dimension indication, 2, '2', '2d' and '2D'
+    Y : extension result
+    Description
+    wextend is an utility function for signal extension.
+    Examples
+    a=rand(1,100);
+    Y=wextend(1,'symh',a,5,'b');
+    b=rand(25,25);
+    Y=wextend(2,'symh',b,[3,5],'lb');
+    Y=wextend('ar','symh',b,3,'r');    
+    """
     raise Exception("Not yet implemented!!")
 
 

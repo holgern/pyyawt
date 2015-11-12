@@ -13,7 +13,9 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_beylkinwavf", "_vaidyanathanwavf", "_dmeywavf", "_bathletswavf", "_legendrewavf",
         "_farraswavf", "_kingsburyqwavf", "_wave_len_validate", "_getdwtMode", "_dwtWrite",
         "_dwt_neo","_qmf_odd","_qmf_even", "_wkeep_1D_center", "_wkeep_1D_left", "_wkeep_1D_right",
-        "_wkeep_1D_index", "_wkeep_2D_center", "_wkeep_2D_index"]
+        "_wkeep_1D_index", "_wkeep_2D_center", "_wkeep_2D_index", "_dyaddown_1D_keep_odd",
+        "_dyaddown_1D_keep_even", "_dyaddown_2D_keep_odd_row", "_dyaddown_2D_keep_odd_col", "_dyaddown_2D_keep_even_row",
+        "_dyaddown_2D_keep_even_col", "_dyaddown_2D_keep_odd", "_dyaddown_2D_keep_even"]
 
 
 from c_pyyawt cimport *
@@ -590,3 +592,85 @@ def _wkeep_2D_index(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float6
         n2 = output.shape[1]
 
         wkeep_2D_index (<double*>input.data, m1, n1, <double*>output.data, m2, n2, rowFirst, colFirst)
+
+def _dyaddown_1D_keep_odd(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        dyaddown_1D_keep_odd (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        
+def _dyaddown_1D_keep_even(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        dyaddown_1D_keep_even (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        
+def _dyaddown_2D_keep_odd_row(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyaddown_2D_keep_odd_row (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyaddown_2D_keep_odd_col(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyaddown_2D_keep_odd_col (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyaddown_2D_keep_even_row(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyaddown_2D_keep_even_row (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyaddown_2D_keep_even(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyaddown_2D_keep_even (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyaddown_2D_keep_even_col(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyaddown_2D_keep_even_col (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+
+def _dyaddown_2D_keep_odd(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyaddown_2D_keep_odd (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
