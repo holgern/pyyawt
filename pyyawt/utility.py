@@ -96,7 +96,145 @@ def dyaddown(x,*args):
     b=np.random.rand((25,25))
     Y=dyaddown(b,'r',0)
     """
-    raise Exception("Not yet implemented!!")
+    m_orig = 0
+    n_orig = 0
+    if (np.size(x.shape) == 2 and np.min(x.shape) == 1):
+        (m_orig,n_orig) = x.shape
+        x = x.flatten()
+    if (len(args) == 0 and np.size(x.shape) == 1):
+        m1 = 1
+        n1 = x.shape[0]
+        m2 = 1
+        n2 = n1 / 2
+        output1 = np.zeros(n2*m2,dtype=np.float64)
+        _dyaddown_1D_keep_even(x, output1)
+        if (m_orig > 1):
+            output1.shape = (n2, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n2)
+        return output1
+    elif (len(args) == 1 and np.size(x.shape) == 1):
+        # isinstance(args[0], int)
+        m1 = 1
+        n1 = x.shape[0]
+        if ((args[0] % 2) == 0):
+            m3 = 1
+            n3 = n1 / 2
+            output1 = np.zeros(n3*m3,dtype=np.float64)
+            _dyaddown_1D_keep_even(x, output1)
+        else:
+            m3 = 1
+            n3 = n1 / 2
+            if (n1 % 2 != 0):
+                n3 += 1
+            output1 = np.zeros(n3*m3,dtype=np.float64)
+            _dyaddown_1D_keep_odd(x, output1)
+        if (m_orig > 1):
+            output1.shape = (n3, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n3)
+        return output1
+    elif (len(args) == 0 and np.size(x.shape) == 2):
+        m1 = x.shape[0]
+        n1 = x.shape[1]
+        m2 = m1
+        n2 = n1 / 2
+        output1 = np.zeros((m2,n2),dtype=np.float64)
+        _dyaddown_2D_keep_even_col(x, output1)
+        return output1
+    elif (len(args) == 1 and np.size(x.shape) == 2 and isinstance(args[0], str)):
+        m1 = x.shape[0]
+        n1 = x.shape[1]
+        if (args[0] == "r"):
+            m3 = m1 / 2
+            n3 = n1
+            output1 = np.zeros((m3,n3),dtype=np.float64)
+            _dyaddown_2D_keep_even_row(x, output1)
+        elif (args[0] == "c"):
+            m3 = m1
+            n3 = n1 / 2
+            output1 = np.zeros((m3,n3),dtype=np.float64)
+            _dyaddown_2D_keep_even_col(x, output1)
+        elif (args[0] == "m"):
+            m3 = m1 / 2
+            n3 = n1 / 2
+            output1 = np.zeros((m3,n3),dtype=np.float64)
+            _dyaddown_2D_keep_even(x, output1)
+        else:
+            raise Exception("Wrong input!!")
+        return output1
+    elif (len(args) == 1 and np.size(x.shape) == 2 and isinstance(args[0], int)):
+        m1 = x.shape[0]
+        n1 = x.shape[1]
+        if ((args[0] % 2) == 0):
+            m3 = m1
+            n3 = n1 / 2
+            output1 = np.zeros((m3,n3),dtype=np.float64)
+            _dyaddown_2D_keep_even_col(x, output1)
+        else:
+            m3 = m1
+            n3 = n1 / 2
+            if (n1 % 2 != 0):
+                n3 += 1
+            output1 = np.zeros((m3,n3),dtype=np.float64)
+            _dyaddown_2D_keep_odd_col(x, output1)
+        return output1
+    elif (len(args) == 2 and np.size(x.shape) == 2):
+        if (isinstance(args[0], int) and isinstance(args[1], str)):
+            input_int = args[0]
+            input_str = args[1]
+        elif (isinstance(args[1], int) and isinstance(args[9], str)):
+            input_int = args[1]
+            input_str = args[0]
+        else:
+            raise Exception("Wrong input!!")
+        m1 = x.shape[0]
+        n1 = x.shape[1]
+        if ((input_int % 2) == 0):
+            if (input_str == "r"):
+                m4 = m1 / 2
+                n4 = n1
+                output1 = np.zeros((m4,n4),dtype=np.float64)
+                _dyaddown_2D_keep_even_row(x, output1)
+            elif (input_str == "c"):
+                m4 = m1
+                n4 = n1 / 2
+                output1 = np.zeros((m4,n4),dtype=np.float64)
+                _dyaddown_2D_keep_even_col(x, output1)
+            elif (input_str == "m"):
+                m4 = m1 / 2
+                n4 = n1 / 2
+                output1 = np.zeros((m4,n4),dtype=np.float64)
+                _dyaddown_2D_keep_even(x, output1)
+            else:
+                raise Exception("Wrong input!!")
+        else:
+            if (input_str == "r"):
+                m4 = m1 / 2
+                n4 = n1
+                if (m1 % 2 != 0):
+                    m4 += 1
+                output1 = np.zeros((m4,n4),dtype=np.float64)
+                _dyaddown_2D_keep_odd_row(x, output1)
+            elif (input_str == "c"):
+                m4 = m1
+                n4 = n1 / 2
+                if (n1 % 2 != 0):
+                    n4 += 1
+                output1 = np.zeros((m4,n4),dtype=np.float64)
+                _dyaddown_2D_keep_odd_col(x, output1)
+            elif (input_str == "m"):
+                m4 = m1 / 2
+                n4 = n1 / 2
+                if (m1 % 2 != 0):
+                    m4 += 1
+                if (n1 % 2 != 0):
+                    n4 += 1
+                output1 = np.zeros((m4,n4),dtype=np.float64)
+                _dyaddown_2D_keep_odd(x, output1)
+            else:
+                raise Exception("Wrong input!!")
+            return output1
 
 
 def dyadup(*args):
