@@ -158,7 +158,7 @@ def wextend(dim,extMode,x,size,typeString=None):
     Y=wextend(1,'symh',a,5,'b');
     b=rand(25,25);
     Y=wextend(2,'symh',b,[3,5],'lb');
-    Y=wextend('ar','symh',b,3,'r');    
+    Y=wextend('ar','symh',b,3,'r');
     """
     raise Exception("Not yet implemented!!")
 
