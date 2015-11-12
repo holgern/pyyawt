@@ -235,19 +235,21 @@ def dyaddown(x,*args):
             else:
                 raise Exception("Wrong input!!")
         return output1.copy(order="C")
+    else:
+        raise Exception("Wrong input!!")    
 
 
 def dyadup(*args):
     raise Exception("Not yet implemented!!")
 
 
-def wkeep(x,size,index=None):
+def wkeep(x,*args):
     """
     signal extraction
     Calling Sequence
-    Y=wkeep(x,[L],[type])
-    Y=wkeep(x,[L],[FIRST])
-    Y=wkeep(M,[S],[indexVector])
+    Y=wkeep(x,L,[type])
+    Y=wkeep(x,L,[FIRST])
+    Y=wkeep(M,S,[indexVector])
     Parameters
     x : double vector
     M : double matrix
@@ -264,7 +266,72 @@ def wkeep(x,size,index=None):
     X=np.dot(np.array([a]).T,np.array([a]))
     Y=wkeep(X,[4, 4])
     """
-    raise Exception("Not yet implemented!!")
+    m_orig = 0
+    n_orig = 0
+    if (np.size(x.shape) == 2 and np.min(x.shape) == 1):
+        (m_orig,n_orig) = x.shape
+        x = x.flatten()
+    if (len(args) == 1 and np.size(x.shape) == 1 and isinstance(args[0], int)):
+        m1 = 1
+        n1 = x.shape[0]
+        m3 = 1
+        n3 = args[0]
+        output1 = np.zeros(n3*m3,dtype=np.float64)
+        _wkeep_1D_center(x,output1)
+        if (m_orig > 1):
+            output1.shape = (n3, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n3)
+        return output1
+    elif (len(args) == 2 and np.size(x.shape) == 1 and isinstance(args[0], int) and isinstance(args[1], str)):
+        m1 = 1
+        n1 = x.shape[0]
+        m4 = 1
+        n4 = args[0]
+        output1 = np.zeros(n4*m4,dtype=np.float64)
+        if (args[1] == 'l' or args[1] == 'L'):
+            _wkeep_1D_left(x,output1)
+        elif (args[1] == 'c' or args[1] == 'C'):
+            _wkeep_1D_center(x,output1)
+        elif (args[1] == 'r' or args[1] == 'R'):
+            _wkeep_1D_right(x,output1)
+        else:
+            raise Exception("Wrong input!!")
+        if (m_orig > 1):
+            output1.shape = (n4, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n4)
+        return output1
+    elif (len(args) == 2 and np.size(x.shape) == 1 and isinstance(args[0], int) and isinstance(args[1], int)):
+        m1 = 1
+        n1 = x.shape[0]
+        m4 = 1
+        n4 = args[0]
+        output1 = np.zeros(n4*m4,dtype=np.float64)
+        _wkeep_1D_index(x,output1,args[1])
+        if (m_orig > 1):
+            output1.shape = (n4, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n4)
+        return output1
+    elif (len(args) == 1 and np.size(x.shape) == 2 and isinstance(args[0], list) and np.size(args[0]) == 2):
+        m1 = x.shape[0]
+        n1 = x.shape[1]
+        m3 = args[0][0]
+        n3 = args[0][1]      
+        output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+        _wkeep_2D_center(x.copy(order="F"), output1)
+        return output1.copy(order="C")
+    elif (len(args) == 2 and np.size(x.shape) == 2 and isinstance(args[0], list) and np.size(args[0]) == 2 and isinstance(args[1], list) and np.size(args[1]) == 2):
+        m1 = x.shape[0]
+        n1 = x.shape[1]
+        m3 = args[0][0]
+        n3 = args[0][1]      
+        output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+        _wkeep_2D_index(x.copy(order="F"), output1, args[1][0], args[1][1])
+        return output1.copy(order="C")
+    else:
+        raise Exception("Wrong Input!!")
 
 
 def wextend(dim,extMode,x,size,typeString=None):
