@@ -37,7 +37,7 @@ class TestWkeep(unittest.TestCase):
         np.testing.assert_almost_equal(b7, b3)
         np.testing.assert_almost_equal(b8, c3)
         np.testing.assert_almost_equal(b9, c3)
-        
+
         a = np.random.randn(1,50)
         b = pyyawt.wkeep(a,27)
         b1 = pyyawt.wkeep(a,27,'c')
@@ -90,7 +90,7 @@ class TestWkeep(unittest.TestCase):
         np.testing.assert_almost_equal(b7, b2)
         np.testing.assert_almost_equal(b8, b3)
         np.testing.assert_almost_equal(b9, c3)
-        
+
         a = np.random.randn(1,51)
         b = pyyawt.wkeep(a,26)
         b1 = pyyawt.wkeep(a,26,'c')
@@ -125,4 +125,3 @@ class TestWkeep(unittest.TestCase):
         c1 = a[1:28,:][:,2:28]
         np.testing.assert_almost_equal(b, c)
         np.testing.assert_almost_equal(b1, c1)
-

@@ -236,7 +236,7 @@ def dyaddown(x,*args):
                 raise Exception("Wrong input!!")
         return output1.copy(order="C")
     else:
-        raise Exception("Wrong input!!")    
+        raise Exception("Wrong input!!")
 
 
 def dyadup(*args):
@@ -318,7 +318,7 @@ def wkeep(x,*args):
         m1 = x.shape[0]
         n1 = x.shape[1]
         m3 = args[0][0]
-        n3 = args[0][1]      
+        n3 = args[0][1]
         output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
         _wkeep_2D_center(x.copy(order="F"), output1)
         return output1.copy(order="C")
@@ -326,7 +326,7 @@ def wkeep(x,*args):
         m1 = x.shape[0]
         n1 = x.shape[1]
         m3 = args[0][0]
-        n3 = args[0][1]      
+        n3 = args[0][1]
         output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
         _wkeep_2D_index(x.copy(order="F"), output1, args[1][0], args[1][1])
         return output1.copy(order="C")
@@ -334,7 +334,7 @@ def wkeep(x,*args):
         raise Exception("Wrong Input!!")
 
 
-def wextend(dim,extMode,x,size,typeString=None):
+def wextend(dim,extMethod,x,L,typeString=None):
     """
     signal extension
     Calling Sequence
@@ -365,7 +365,160 @@ def wextend(dim,extMode,x,size,typeString=None):
     Y=wextend(2,'symh',b,[3,5],'lb');
     Y=wextend('ar','symh',b,3,'r');
     """
-    raise Exception("Not yet implemented!!")
+    m_orig = 0
+    n_orig = 0
+    if (np.size(x.shape) == 2 and np.min(x.shape) == 1):
+        (m_orig,n_orig) = x.shape
+        x = x.flatten()
+    if (np.size(x.shape) == 1 and typeString is not None):
+        m3 = 1
+        n3 = x.shape[0]
+        if ((extMethod == 'per') and ((m3*n3) % 2 != 0)):
+            if (typeString == 'l' or typeString == 'r'):
+                m6 = 1
+                n6 = n3 + L + 1
+            elif (typeString == 'b'):
+                m6 = 1
+                n6 = n3 + 2*L + 1
+        else:
+            if (typeString == 'l' or typeString == 'r'):
+                m6 = 1
+                n6 = n3 + L
+            elif (typeString == 'b'):
+                m6 = 1
+                n6 = n3 + 2*L
+        output1 = np.zeros(n6*m6,dtype=np.float64)
+        if (typeString == 'l'):
+            _wextend_1D_left(x,output1,extMethod.encode())
+        elif (typeString == 'r'):
+            _wextend_1D_right(x,output1,extMethod.encode())
+        else:
+            _wextend_1D_center(x,output1,extMethod.encode())
+        if (m_orig > 1):
+            output1.shape = (n6, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n6)
+        return output1
+    elif (np.size(x.shape) == 1 and typeString is None):
+        m3 = 1
+        n3 = x.shape[0]
+        if ((extMethod == 'per') and ((m3*n3) % 2 != 0)):
+            m6 = 1
+            n6 = n3 + 2*L + 1
+        else:
+            m6 = 1
+            n6 = n3 + 2*L
+        output1 = np.zeros(n6*m6,dtype=np.float64)
+        _wextend_1D_center(x,output1,extMethod.encode())
+        if (m_orig > 1):
+            output1.shape = (n6, 1)
+        elif (n_orig > 1):
+            output1.shape = (1, n6)
+        return output1
+    elif (np.size(x.shape) == 2 and typeString is not None):
+        m3 = x.shape[0]
+        n3 = x.shape[1]
+        if ((extMethod == 'per') and (m3 % 2 != 0)):
+            if (typeString[0] == 'l' or typeString[0] == 'r'):
+                m6 = m3 + L + 1
+            elif (typeString[0] == 'r'):
+                m6 = m3 + 2*L + 1
+        else:
+            if (typeString[0] == 'l' or typeString[0] == 'r'):
+                m6 = m3 + L
+            elif (typeString[0] == 'r'):
+                m6 = m3 + 2*L
+        if ((extMethod == 'per') and (n3 % 2 != 0)):
+            if (typeString[1] == 'l' or typeString[1] == 'r'):
+                n6 = n3 + L + 1
+            elif (typeString[1] == 'r'):
+                n6 = n3 + 2*L + 1
+        else:
+            if (typeString[1] == 'l' or typeString[1] == 'r'):
+                n6 = n3 + L
+            elif (typeString[1] == 'r'):
+                n6 = n3 + 2*L
+        output1 = np.zeros((m6,n6),dtype=np.float64,order="F")
+        _wextend_2D(x.copy(order="F"), output1, extMethod.encode(), typeString[0].encode(), typeString[1].encode())
+        return output1.copy(order="C")
+    elif (np.size(x.shape) == 2 and typeString is None):
+        m3 = x.shape[0]
+        n3 = x.shape[1]
+        if ((extMethod == 'per') and (m3 % 2 != 0)):
+            m6 = m3 + 2*L + 1
+        else:
+            m6 = m3 + 2*L
+        if ((extMethod == 'per') and (n3 % 2 != 0)):
+            n6 = n3 + 2*L + 1
+        else:
+            n6 = n3 + 2*L
+        output1 = np.zeros((m6,n6),dtype=np.float64,order="F")
+        _wextend_2D(x.copy(order="F"), output1, extMethod.encode(), b'b', b'b')
+        return output1.copy(order="C")
+    elif (np.size(x.shape) == 2 and typeString is None and dim == "ar"):
+        m3 = x.shape[0]
+        n3 = x.shape[1]
+        if ((extMethod == 'per') and (m3 % 2 != 0)):
+            m6 = m3 + 2*L + 1
+        else:
+            m6 = m3 + 2*L
+        if ((extMethod == 'per') and (n3 % 2 != 0)):
+            n6 = n3 + 2*L + 1
+        else:
+            n6 = n3 + 2*L
+        output1 = np.zeros((m6,n6),dtype=np.float64,order="F")
+        wextend_2D_row(x.copy(order="F"), output1, extMethod.encode(), b'b')
+        return output1.copy(order="C")
+    elif (np.size(x.shape) == 2 and typeString is None and dim == "ac"):
+        m3 = x.shape[0]
+        n3 = x.shape[1]
+        if ((extMethod == 'per') and (m3 % 2 != 0)):
+            m6 = m3 + 2*L + 1
+        else:
+            m6 = m3 + 2*L
+        if ((extMethod == 'per') and (n3 % 2 != 0)):
+            n6 = n3 + 2*L + 1
+        else:
+            n6 = n3 + 2*L
+        output1 = np.zeros((m6,n6),dtype=np.float64,order="F")
+        wextend_2D_col(x.copy(order="F"), output1, extMethod.encode(), b'b')
+        return output1.copy(order="C")
+    elif (np.size(x.shape) == 2 and typeString is not None and dim == "ar"):
+        m3 = x.shape[0]
+        n3 = x.shape[1]
+        if ((extMethod == 'per') and (m3 % 2 != 0)):
+            if (typeString == 'l' or typeString == 'r'):
+                m6 = m3 + L + 1
+            elif (typeString == 'r'):
+                m6 = m3 + 2*L + 1
+        else:
+            if (typeString == 'l' or typeString == 'r'):
+                m6 = m3 + L
+            elif (typeString == 'r'):
+                m6 = m3 + 2*L
+        n6 = n3
+        output1 = np.zeros((m6,n6),dtype=np.float64,order="F")
+        _wextend_2D_row(x.copy(order="F"), output1, extMethod.encode(), typeString.encode())
+        return output1.copy(order="C")
+    elif (np.size(x.shape) == 2 and typeString is not None and dim == "ac"):
+        m3 = x.shape[0]
+        n3 = x.shape[1]
+        if ((extMethod == 'per') and (n3 % 2 != 0)):
+            if (typeString == 'l' or typeString == 'r'):
+                n6 = n3 + L + 1
+            elif (typeString == 'r'):
+                n6 = n3 + 2*L + 1
+        else:
+            if (typeString == 'l' or typeString == 'r'):
+                n6 = n3 + L
+            elif (typeString == 'r'):
+                n6 = n3 + 2*L
+        m6 = m3
+        output1 = np.zeros((m6,n6),dtype=np.float64,order="F")
+        _wextend_2D_col(x.copy(order="F"), output1, extMethod.encode(), typeString.encode())
+        return output1.copy(order="C")
+    else:
+        raise Exception("Wrong input!!")
 
 
 def wcodemat(*args):
