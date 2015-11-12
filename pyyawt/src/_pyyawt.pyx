@@ -653,24 +653,24 @@ def _dyaddown_2D_keep_even(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np
 
         dyaddown_2D_keep_even (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
 
-def _dyaddown_2D_keep_even_col(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+def _dyaddown_2D_keep_even_col(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t, ndim=2] output):
         cdef int m1, n1
-        m1 = input.shape[0]
-        n1 = input.shape[1]
+        m1 = input1.shape[0]
+        n1 = input1.shape[1]
         cdef int m2, n2
         m2 = output.shape[0]
         n2 = output.shape[1]
 
-        dyaddown_2D_keep_even_col (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+        dyaddown_2D_keep_even_col (<double*>input1.data, m1, n1, <double*>output.data, m2, n2)
 
 
-def _dyaddown_2D_keep_odd(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+def _dyaddown_2D_keep_odd(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t, ndim=2] output):
         cdef int m1, n1
-        m1 = input.shape[0]
-        n1 = input.shape[1]
+        m1 = input1.shape[0]
+        n1 = input1.shape[1]
         cdef int m2, n2
         m2 = output.shape[0]
         n2 = output.shape[1]
 
-        dyaddown_2D_keep_odd (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+        dyaddown_2D_keep_odd (<double*>input1.data, m1, n1, <double*>output.data, m2, n2)
 

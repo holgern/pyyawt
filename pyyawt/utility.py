@@ -63,16 +63,16 @@ def qmf(x,even_odd=None):
     if (np.size(x.shape) == 1):
         x.shape = (x.shape[0], 1)
     (m1, n1) = x.shape
-    output1 = np.zeros((m1,n1),dtype=np.float64)
+    output1 = np.zeros((m1,n1),dtype=np.float64,order="F")
     if (even_odd is None):
-        _qmf_even(x, output1)
+        _qmf_even(x.copy(order="F"), output1)
         return output1
     else:
         if ((even_odd % 2) == 0):
-            _qmf_even(x, output1)
+            _qmf_even(x.copy(order="F"), output1)
         else:
-            _qmf_odd(x, output1)
-        return output1
+            _qmf_odd(x.copy(order="F"), output1)
+        return output1.copy(order="C")
 
 
 def dyaddown(x,*args):
@@ -105,7 +105,7 @@ def dyaddown(x,*args):
         m1 = 1
         n1 = x.shape[0]
         m2 = 1
-        n2 = n1 / 2
+        n2 = np.floor(n1 / 2).astype(int)
         output1 = np.zeros(n2*m2,dtype=np.float64)
         _dyaddown_1D_keep_even(x, output1)
         if (m_orig > 1):
@@ -119,12 +119,12 @@ def dyaddown(x,*args):
         n1 = x.shape[0]
         if ((args[0] % 2) == 0):
             m3 = 1
-            n3 = n1 / 2
+            n3 = np.floor(n1 / 2).astype(int)
             output1 = np.zeros(n3*m3,dtype=np.float64)
             _dyaddown_1D_keep_even(x, output1)
         else:
             m3 = 1
-            n3 = n1 / 2
+            n3 = np.floor(n1 / 2).astype(int)
             if (n1 % 2 != 0):
                 n3 += 1
             output1 = np.zeros(n3*m3,dtype=np.float64)
@@ -138,47 +138,47 @@ def dyaddown(x,*args):
         m1 = x.shape[0]
         n1 = x.shape[1]
         m2 = m1
-        n2 = n1 / 2
-        output1 = np.zeros((m2,n2),dtype=np.float64)
-        _dyaddown_2D_keep_even_col(x, output1)
-        return output1
+        n2 = np.floor(n1 / 2).astype(int)
+        output1 = np.zeros((m2,n2),dtype=np.float64,order="F")
+        _dyaddown_2D_keep_even_col(x.copy(order="F"), output1)
+        return output1.copy(order="C")
     elif (len(args) == 1 and np.size(x.shape) == 2 and isinstance(args[0], str)):
         m1 = x.shape[0]
         n1 = x.shape[1]
         if (args[0] == "r"):
-            m3 = m1 / 2
+            m3 = np.floor(m1 / 2).astype(int)
             n3 = n1
-            output1 = np.zeros((m3,n3),dtype=np.float64)
-            _dyaddown_2D_keep_even_row(x, output1)
+            output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+            _dyaddown_2D_keep_even_row(x.copy(order="F"), output1)
         elif (args[0] == "c"):
             m3 = m1
-            n3 = n1 / 2
-            output1 = np.zeros((m3,n3),dtype=np.float64)
-            _dyaddown_2D_keep_even_col(x, output1)
+            n3 = np.floor(n1 / 2).astype(int)
+            output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+            _dyaddown_2D_keep_even_col(x.copy(order="F"), output1)
         elif (args[0] == "m"):
-            m3 = m1 / 2
-            n3 = n1 / 2
-            output1 = np.zeros((m3,n3),dtype=np.float64)
-            _dyaddown_2D_keep_even(x, output1)
+            m3 = np.floor(m1 / 2).astype(int)
+            n3 = np.floor(n1 / 2).astype(int)
+            output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+            _dyaddown_2D_keep_even(x.copy(order="F"), output1)
         else:
             raise Exception("Wrong input!!")
-        return output1
+        return output1.copy(order="C")
     elif (len(args) == 1 and np.size(x.shape) == 2 and isinstance(args[0], int)):
         m1 = x.shape[0]
         n1 = x.shape[1]
         if ((args[0] % 2) == 0):
             m3 = m1
-            n3 = n1 / 2
-            output1 = np.zeros((m3,n3),dtype=np.float64)
-            _dyaddown_2D_keep_even_col(x, output1)
+            n3 = np.floor(n1 / 2).astype(int)
+            output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+            _dyaddown_2D_keep_even_col(x.copy(order="F"), output1)
         else:
             m3 = m1
-            n3 = n1 / 2
+            n3 = np.floor(n1 / 2).astype(int)
             if (n1 % 2 != 0):
                 n3 += 1
-            output1 = np.zeros((m3,n3),dtype=np.float64)
-            _dyaddown_2D_keep_odd_col(x, output1)
-        return output1
+            output1 = np.zeros((m3,n3),dtype=np.float64,order="F")
+            _dyaddown_2D_keep_odd_col(x.copy(order="F"), output1)
+        return output1.copy(order="C")
     elif (len(args) == 2 and np.size(x.shape) == 2):
         if (isinstance(args[0], int) and isinstance(args[1], str)):
             input_int = args[0]
@@ -192,49 +192,49 @@ def dyaddown(x,*args):
         n1 = x.shape[1]
         if ((input_int % 2) == 0):
             if (input_str == "r"):
-                m4 = m1 / 2
+                m4 = np.floor(m1 / 2).astype(int)
                 n4 = n1
-                output1 = np.zeros((m4,n4),dtype=np.float64)
-                _dyaddown_2D_keep_even_row(x, output1)
+                output1 = np.zeros((m4,n4),dtype=np.float64,order="F")
+                _dyaddown_2D_keep_even_row(x.copy(order="F"), output1)
             elif (input_str == "c"):
                 m4 = m1
-                n4 = n1 / 2
-                output1 = np.zeros((m4,n4),dtype=np.float64)
-                _dyaddown_2D_keep_even_col(x, output1)
+                n4 = np.floor(n1 / 2).astype(int)
+                output1 = np.zeros((m4,n4),dtype=np.float64,order="F")
+                _dyaddown_2D_keep_even_col(x.copy(order="F"), output1)
             elif (input_str == "m"):
-                m4 = m1 / 2
-                n4 = n1 / 2
-                output1 = np.zeros((m4,n4),dtype=np.float64)
-                _dyaddown_2D_keep_even(x, output1)
+                m4 = np.floor(m1 / 2).astype(int)
+                n4 = np.floor(n1 / 2).astype(int)
+                output1 = np.zeros((m4,n4),dtype=np.float64,order="F")
+                _dyaddown_2D_keep_even(x.copy(order="F"), output1)
             else:
                 raise Exception("Wrong input!!")
         else:
             if (input_str == "r"):
-                m4 = m1 / 2
+                m4 = np.floor(m1 / 2).astype(int)
                 n4 = n1
                 if (m1 % 2 != 0):
                     m4 += 1
-                output1 = np.zeros((m4,n4),dtype=np.float64)
-                _dyaddown_2D_keep_odd_row(x, output1)
+                output1 = np.zeros((m4,n4),dtype=np.float64,order="F")
+                _dyaddown_2D_keep_odd_row(x.copy(order="F"), output1)
             elif (input_str == "c"):
                 m4 = m1
-                n4 = n1 / 2
+                n4 = np.floor(n1 / 2).astype(int)
                 if (n1 % 2 != 0):
                     n4 += 1
-                output1 = np.zeros((m4,n4),dtype=np.float64)
-                _dyaddown_2D_keep_odd_col(x, output1)
+                output1 = np.zeros((m4,n4),dtype=np.float64,order="F")
+                _dyaddown_2D_keep_odd_col(x.copy(order="F"), output1)
             elif (input_str == "m"):
-                m4 = m1 / 2
-                n4 = n1 / 2
+                m4 = np.floor(m1 / 2).astype(int)
+                n4 = np.floor(n1 / 2).astype(int)
                 if (m1 % 2 != 0):
                     m4 += 1
                 if (n1 % 2 != 0):
                     n4 += 1
-                output1 = np.zeros((m4,n4),dtype=np.float64)
-                _dyaddown_2D_keep_odd(x, output1)
+                output1 = np.zeros((m4,n4),dtype=np.float64,order="F")
+                _dyaddown_2D_keep_odd(x.copy(order="F"), output1)
             else:
                 raise Exception("Wrong input!!")
-            return output1
+        return output1.copy(order="C")
 
 
 def dyadup(*args):
