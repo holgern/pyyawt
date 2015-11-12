@@ -689,6 +689,7 @@ extern "C" {
              extend_method getdwtMode();
 	     void setdwtMode(extend_method mode);
              void dwt_write (char *mode, int *errCode);
+	     void char_to_extend_method(char *mode, extend_method *extMethod, int *errCode);
              void dwt_parse(char **strr);
              void dwt (double *sigIn, int sigInLength, double *lowDe,
             double *hiDe, int filterLen, double *approx,

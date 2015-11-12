@@ -685,7 +685,8 @@ def _wextend_1D_center(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.flo
         m2 = 1
         n2 = output.shape[0]
         cdef extend_method extMethod
-        extend_method_parse (extModeStr, &extMethod)
+        cdef int errCode
+        char_to_extend_method (extModeStr, &extMethod, &errCode)
 
         wextend_1D_center(<double*>input.data, m1*n1, <double*>output.data, m2*n2, extMethod);
 
@@ -698,7 +699,8 @@ def _wextend_1D_left(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float
         m2 = 1
         n2 = output.shape[0]
         cdef extend_method extMethod
-        extend_method_parse (extModeStr, &extMethod)
+        cdef int errCode
+        char_to_extend_method (extModeStr, &extMethod, &errCode)
 
         wextend_1D_left(<double*>input.data, m1*n1, <double*>output.data, m2*n2, extMethod);
 
@@ -711,7 +713,8 @@ def _wextend_1D_right(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.floa
         m2 = 1
         n2 = output.shape[0]
         cdef extend_method extMethod
-        extend_method_parse (extModeStr, &extMethod)
+        cdef int errCode
+        char_to_extend_method (extModeStr, &extMethod, &errCode)
 
         wextend_1D_right(<double*>input.data, m1*n1, <double*>output.data, m2*n2, extMethod);
 
@@ -724,7 +727,8 @@ def _wextend_2D(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t
         m2 = output.shape[0]
         n2 = output.shape[1]
         cdef extend_method extMethod
-        extend_method_parse (extModeStr, &extMethod)
+        cdef int errCode
+        char_to_extend_method (extModeStr, &extMethod, &errCode)
         wextend_2D (<double*>input1.data, m1, n1, <double*>output.data, m2, n2, extMethod, rowOpt, colOpt)
 
 
@@ -736,7 +740,8 @@ def _wextend_2D_col(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float
         m2 = output.shape[0]
         n2 = output.shape[1]
         cdef extend_method extMethod
-        extend_method_parse (extModeStr, &extMethod)
+        cdef int errCode
+        char_to_extend_method (extModeStr, &extMethod, &errCode)
         wextend_2D_col (<double*>input1.data, m1, n1, <double*>output.data, m2, n2, extMethod, Opt)
 
 
@@ -748,5 +753,6 @@ def _wextend_2D_row(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float
         m2 = output.shape[0]
         n2 = output.shape[1]
         cdef extend_method extMethod
-        extend_method_parse (extModeStr, &extMethod)
+        cdef int errCode
+        char_to_extend_method (extModeStr, &extMethod, &errCode)
         wextend_2D_row (<double*>input1.data, m1, n1, <double*>output.data, m2, n2, extMethod, Opt)

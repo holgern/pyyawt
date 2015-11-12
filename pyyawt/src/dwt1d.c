@@ -192,6 +192,24 @@ wave_len_validate (int sigInLen, int waveLength, int *lev, int *val)
 
 
 void
+char_to_extend_method(char *mode, extend_method *extMethod, int *errCode)
+{
+  int count;
+  *errCode = UNKNOWN_INPUT_ERR;
+
+  for (count=0;count<extensionIdentityNum;count++)
+    {
+      if (strcmp(mode,ei[count].extMethodName) == 0)
+	{
+	  *extMethod = ei[count].extMethod;
+	  *errCode = SUCCESS;
+	  break;
+	}
+    }
+  return;
+}
+
+void
 dwt_write (char *mode, int *errCode)
 {
   int count;
@@ -208,6 +226,7 @@ dwt_write (char *mode, int *errCode)
     }
   return;
 }
+
 
 void
 dwt_parse(char **str1)
