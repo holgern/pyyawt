@@ -810,14 +810,15 @@ wave_dec_len_cal (int filterLen, int sigLength,
   int count = 0;
   int calLen;
   waveDecLengthArray[stride + 1] = sigLength;
-  if (dwtMode!=PER)
+  if (getdwtMode()!=PER)
     {
       calLen = sigLength;
       for (count = 0; count < stride; count++)
 	{
 	  calLen += (filterLen - 1);
 	  waveDecLengthArray[stride-count]=(int)(floor(calLen/2));
-	  calLen = *(waveDecLengthArray + stride - count);
+	  calLen = waveDecLengthArray[stride - count];
+	  
 	}
       waveDecLengthArray[0] = waveDecLengthArray[1];
     }

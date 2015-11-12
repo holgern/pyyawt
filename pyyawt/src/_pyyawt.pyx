@@ -17,7 +17,7 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_dyaddown_1D_keep_even", "_dyaddown_2D_keep_odd_row", "_dyaddown_2D_keep_odd_col", "_dyaddown_2D_keep_even_row",
         "_dyaddown_2D_keep_even_col", "_dyaddown_2D_keep_odd", "_dyaddown_2D_keep_even",
         "_wextend_1D_center", "_wextend_1D_left", "_wextend_1D_right", "_wextend_2D",
-        "_wextend_2D_col", "_wextend_2D_row", "_waverec", "_wavedec"]
+        "_wextend_2D_col", "_wextend_2D_row", "_waverec", "_wavedec", "_wave_dec_len_cal"]
 
 
 from c_pyyawt cimport *
@@ -514,6 +514,7 @@ def _dwt_neo(np.ndarray[np.float64_t, ndim=1] input1, np.ndarray[np.float64_t, n
         n4 = output1.shape[0]
 
         dwt_neo (<double*>input1.data, m1*n1, <double*>input2.data,  <double*>input3.data,m3*n3,  <double*>output1.data, <double*>output2.data, m4*n4, getdwtMode());
+        filter_clear()
         
 def _qmf_odd(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
         cdef int m1, n1
@@ -753,9 +754,10 @@ def _waverec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, nd
         waveDecLength = waveDecLengthArray.shape[0]
         
         waverec (<double*>input.data, m1*n1, <double*>output.data, m2*n2, <double*>lowRe.data, <double*>hiRe.data, filterLength, <int*>waveDecLengthArray.data, waveDecLength, waveDecLength-2, getdwtMode())
+        filter_clear()
 
 
-def _wavedec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output1, np.ndarray[np.float64_t, ndim=1] lowRe, np.ndarray[np.float64_t, ndim=1] hiRe, np.ndarray[np.int, ndim=1] output2, stride):
+def _wavedec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output1, np.ndarray[np.float64_t, ndim=1] lowRe, np.ndarray[np.float64_t, ndim=1] hiRe, np.ndarray[np.int32_t, ndim=1] output2, stride):
         cdef int m1, n1
         m1 = 1
         n1 = input.shape[0]
@@ -768,4 +770,23 @@ def _wavedec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, nd
         cdef int filterLength
         filterLength = lowRe.shape[0]
         
-        waverec (<double*>input.data, m1*n1, <double*>output1.data, m2*n2, <double*>lowRe.data, <double*>hiRe.data, filterLength, <int*>output2.data, m5*n5, stride, getdwtMode())
+        wavedec (<double*>input.data, m1*n1, <double*>output1.data, m2*n2, <double*>lowRe.data, <double*>hiRe.data, filterLength, <int*>output2.data, m5*n5, stride, getdwtMode())
+        filter_clear()
+        
+def _wave_dec_len_cal(filterLen, sigLength, stride, np.ndarray[np.int32_t, ndim=1] waveDecLengthArray):
+        cdef int waveDecLength
+        waveDecLength = waveDecLengthArray.shape[0]
+        wave_dec_len_cal(filterLen, sigLength, stride, <int*>waveDecLengthArray.data)
+        #count = 0
+        #waveDecLengthArray[stride + 1] = sigLength
+        #if (getdwtMode()!=PER):
+        #        calLen = sigLength
+        #        for count in np.arange(stride):
+        #                calLen += (filterLen - 1)
+        #                waveDecLengthArray[stride-count]=int(np.floor(calLen/2))
+        #                calLen = waveDecLengthArray[stride - count]
+        #        waveDecLengthArray[0] = waveDecLengthArray[1]
+        #else:
+        #        for count in np.arange(count,0,-1):
+        #                waveDecLengthArray[count] = int(np.ceil(((waveDecLengthArray[count+1]))/2.0))
+        #        waveDecLengthArray[0] = waveDecLengthArray[1]

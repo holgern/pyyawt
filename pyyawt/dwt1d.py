@@ -142,7 +142,52 @@ def wavedec(x, N, *args):
     X = wnoise(4,10,0.5); //doppler with N=1024
     [C,L]=wavedec(X,3,'db2')
     """
-    raise Exception("Not yet implemented!!")
+    x = x.flatten()
+    m1 = 1
+    n1 = x.shape[0]
+    if (len(args) == 1 and isinstance(args[0], str)):
+        wname = args[0]
+        ret = _wavelet_parser(wname.encode())
+        filterLength = _wfilters_length(wname.encode())
+        Lo_D, Hi_D = wfilters(wname,'d')
+    elif(len(args) == 2):
+        Lo_D = args[0]
+        Hi_D = args[1]
+        filterLength = Lo_D.shape[0]
+    else:
+        raise Exception("Wrong input!!")
+
+    stride, val = _wave_len_validate(x.shape[0],filterLength)
+    if (val == 0 or stride < N):
+        raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
+    m4 = 1
+    m5 = 1
+    n4 = 0
+    calLen = n1 * m1
+    for count in np.arange(N):
+        calLen += filterLength - 1
+        temLen = np.floor(calLen/2).astype(int)
+        n4 += temLen
+        calLen = temLen
+
+    n4 += temLen
+    if (dwtmode("status","nodisp") == 'per'):
+        n4 = 0
+        calLen = n1 * m1
+        for count in np.arange(N):
+            # calLen += m3*n3 - 1;
+            calLen = np.ceil(calLen/2.0).astype(int)
+            temLen = calLen
+            n4 += temLen
+            # calLen = temLen;
+        n4 += temLen
+    n5 = N + 2
+
+    output1 = np.zeros(n4*m4,dtype=np.float64)
+    output2 = np.zeros(n5*m5,dtype=np.int32)
+    _wave_dec_len_cal(filterLength, m1*n1, N, output2)
+    _wavedec(x, output1, Lo_D, Hi_D, output2, N)
+    return output1, output2
 
 
 def waverec(C, L, *args):
