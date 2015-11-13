@@ -16,8 +16,11 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_wkeep_1D_index", "_wkeep_2D_center", "_wkeep_2D_index", "_dyaddown_1D_keep_odd",
         "_dyaddown_1D_keep_even", "_dyaddown_2D_keep_odd_row", "_dyaddown_2D_keep_odd_col", "_dyaddown_2D_keep_even_row",
         "_dyaddown_2D_keep_even_col", "_dyaddown_2D_keep_odd", "_dyaddown_2D_keep_even",
+        "_dyadup_1D_feed_odd", "_dyadup_1D_feed_even", "_dyadup_2D_feed_odd_row", "_dyadup_2D_feed_odd_col", "_dyadup_2D_feed_even_row",
+        "_dyadup_2D_feed_even_col", "_dyadup_2D_feed_odd", "_dyadup_2D_feed_even",
         "_wextend_1D_center", "_wextend_1D_left", "_wextend_1D_right", "_wextend_2D",
-        "_wextend_2D_col", "_wextend_2D_row", "_waverec", "_wavedec", "_wave_dec_len_cal"]
+        "_wextend_2D_col", "_wextend_2D_row", "_waverec", "_wavedec", "_wave_dec_len_cal",
+        "_idwt_neo", "_idwt_detail_neo", "_idwt_approx_neo"]
 
 
 from c_pyyawt cimport *
@@ -678,6 +681,89 @@ def _dyaddown_2D_keep_odd(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np
         dyaddown_2D_keep_odd (<double*>input1.data, m1, n1, <double*>output.data, m2, n2)
 
 
+def _dyadup_1D_feed_odd(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        dyadup_1D_feed_odd (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        
+def _dyadup_1D_feed_even(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
+        cdef int m1, n1
+        m1 = 1
+        n1 = input.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = output.shape[0]
+
+        dyadup_1D_feed_even (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        
+def _dyadup_2D_feed_odd_row(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyadup_2D_feed_odd_row (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyadup_2D_feed_odd_col(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyadup_2D_feed_odd_col (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyadup_2D_feed_even_row(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyadup_2D_feed_even_row (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyadup_2D_feed_even(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input.shape[0]
+        n1 = input.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyadup_2D_feed_even (<double*>input.data, m1, n1, <double*>output.data, m2, n2)
+
+def _dyadup_2D_feed_even_col(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input1.shape[0]
+        n1 = input1.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyadup_2D_feed_even_col (<double*>input1.data, m1, n1, <double*>output.data, m2, n2)
+
+
+def _dyadup_2D_feed_odd(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float64_t, ndim=2] output):
+        cdef int m1, n1
+        m1 = input1.shape[0]
+        n1 = input1.shape[1]
+        cdef int m2, n2
+        m2 = output.shape[0]
+        n2 = output.shape[1]
+
+        dyadup_2D_feed_odd (<double*>input1.data, m1, n1, <double*>output.data, m2, n2)
+
+
+
 def _wextend_1D_center(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output, char* extModeStr):
         cdef int m1, n1
         m1 = 1
@@ -741,7 +827,7 @@ def _wextend_2D_row(np.ndarray[np.float64_t, ndim=2] input1, np.ndarray[np.float
         wextend_2D_row (<double*>input1.data, m1, n1, <double*>output.data, m2, n2, char_to_extend_method (extModeStr), Opt)
 
 
-def _waverec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output,np.ndarray[np.float64_t, ndim=1] lowRe, np.ndarray[np.float64_t, ndim=1] hiRe, np.ndarray[np.int, ndim=1] waveDecLengthArray):
+def _waverec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output,np.ndarray[np.float64_t, ndim=1] lowRe, np.ndarray[np.float64_t, ndim=1] hiRe, np.ndarray[np.int32_t, ndim=1] waveDecLengthArray, stride):
         cdef int m1, n1
         m1 = 1
         n1 = input.shape[0]
@@ -753,7 +839,7 @@ def _waverec(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, nd
         cdef int waveDecLength
         waveDecLength = waveDecLengthArray.shape[0]
         
-        waverec (<double*>input.data, m1*n1, <double*>output.data, m2*n2, <double*>lowRe.data, <double*>hiRe.data, filterLength, <int*>waveDecLengthArray.data, waveDecLength, waveDecLength-2, getdwtMode())
+        waverec (<double*>input.data, m1*n1, <double*>output.data, m2*n2, <double*>lowRe.data, <double*>hiRe.data, filterLength, <int*>waveDecLengthArray.data, waveDecLength, stride, getdwtMode())
         filter_clear()
 
 
@@ -790,3 +876,46 @@ def _wave_dec_len_cal(filterLen, sigLength, stride, np.ndarray[np.int32_t, ndim=
         #        for count in np.arange(count,0,-1):
         #                waveDecLengthArray[count] = int(np.ceil(((waveDecLengthArray[count+1]))/2.0))
         #        waveDecLengthArray[0] = waveDecLengthArray[1]
+
+def _idwt_neo(np.ndarray[np.float64_t, ndim=1] cA, np.ndarray[np.float64_t, ndim=1] cD, np.ndarray[np.float64_t, ndim=1] lowRe, np.ndarray[np.float64_t, ndim=1] hiRe, np.ndarray[np.float64_t, ndim=1] output1):
+        cdef int m1, n1
+        m1 = 1
+        n1 = cA.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = cD.shape[0]
+        cdef int m5, n5
+        m5 = 1
+        n5 = output1.shape[0]
+        cdef int filterLength
+        filterLength = lowRe.shape[0]
+        
+        idwt_neo (<double*>cA.data, <double*>cD.data, m1*n1, <double*>lowRe.data, <double*>hiRe.data, filterLength, <double*>output1.data, m5*n5)
+        filter_clear()
+
+def _idwt_detail_neo(np.ndarray[np.float64_t, ndim=1] cD, np.ndarray[np.float64_t, ndim=1] hiRe, np.ndarray[np.float64_t, ndim=1] output1):
+        cdef int m2, n2
+        m2 = 1
+        n2 = cD.shape[0]
+        cdef int m5, n5
+        m5 = 1
+        n5 = output1.shape[0]
+        cdef int filterLength
+        filterLength = hiRe.shape[0]
+        
+        idwt_detail_neo (<double*>cD.data, m2*n2, <double*>hiRe.data, filterLength, <double*>output1.data, m5*n5)
+        filter_clear()
+
+def _idwt_approx_neo(np.ndarray[np.float64_t, ndim=1] cA, np.ndarray[np.float64_t, ndim=1] lowRe,  np.ndarray[np.float64_t, ndim=1] output1):
+        cdef int m1, n1
+        m1 = 1
+        n1 = cA.shape[0]
+        cdef int m5, n5
+        m5 = 1
+        n5 = output1.shape[0]
+        cdef int filterLength
+        filterLength = lowRe.shape[0]
+        
+        idwt_approx_neo (<double*>cA.data, m1*n1, <double*>lowRe.data,  filterLength, <double*>output1.data, m5*n5)
+        filter_clear()        
+        

@@ -144,3 +144,52 @@ class TestDwt(unittest.TestCase):
             cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,'symh',s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
             np.testing.assert_almost_equal(caa.flatten(), cA)
             np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+    def test_dwtMode(self):
+        s1 = self.s1
+        x1 = self.x1
+        x2 = self.x2
+        # ST = pyyawt.dwtmode("status","nodisp")
+        dwtModes = ['symw', 'asymh', 'asymw', 'zpd', 'sp0', 'sp1',
+                  'ppd','per']
+        wname = "db10"
+        for N in np.arange(len(dwtModes)-1):
+            # pyyawt.dwtmode(dwtModes[N])
+            [cA,cD] = pyyawt.dwt(x1,wname,"mode",dwtModes[N])
+            [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters(wname)
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(x2,wname,"mode",dwtModes[N])
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+            [cA,cD] = pyyawt.dwt(s1,wname,"mode",dwtModes[N])
+            caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1)+np.size(Lo_D)-1)))
+            cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1)+np.size(Lo_D)-1)))
+            np.testing.assert_almost_equal(caa.flatten(), cA)
+            np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+        N = len(dwtModes) - 1
+        [cA,cD] = pyyawt.dwt(x1,wname,"mode",dwtModes[N])
+        [Lo_D,Hi_D,Lo_R,Hi_R] = pyyawt.wfilters(wname)
+        caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x1,np.size(Lo_D),'b'),Lo_D),(np.size(x1))))
+        cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x1,np.size(Lo_D),'b'),Hi_D),(np.size(x1))))
+        np.testing.assert_almost_equal(caa.flatten(), cA)
+        np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+        [cA,cD] = pyyawt.dwt(x2,wname,"mode",dwtModes[N])
+        caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x2,np.size(Lo_D),'b'),Lo_D),(np.size(x2))))
+        cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],x2,np.size(Lo_D),'b'),Hi_D),(np.size(x2))))
+        np.testing.assert_almost_equal(caa.flatten(), cA)
+        np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+        [cA,cD] = pyyawt.dwt(s1,wname,"mode",dwtModes[N])
+        caa = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],s1,np.size(Lo_D),'b'),Lo_D),(np.size(s1))))
+        cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1))))
+        np.testing.assert_almost_equal(caa.flatten(), cA)
+        np.testing.assert_almost_equal(cdd.flatten(), cD)

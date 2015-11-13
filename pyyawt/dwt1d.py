@@ -50,61 +50,130 @@ def dwt(x,*args):
     cA,cD=dwt(x,'db2','mode','asymh')
     """
     x = x.flatten()
-    if (len(args) == 1 or (len(args) == 3 and args[1] == 'mode')):
-        # flow 1
+    m1 = 1
+    n1 = x.shape[0]
+    ST = None
+    if ((len(args) == 1 or (len(args) == 3 and isinstance(args[-1], str) and args[-2] == 'mode')) and isinstance(args[0], str)):
         wname = args[0]
         ret = _wavelet_parser(wname.encode())
         filterLength = _wfilters_length(wname.encode())
-        stride, val = _wave_len_validate(x.shape[0],filterLength)
-        if (val == 0):
-            raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
-
-        m3 = 1
-        m4 = 1
-        n3 = np.floor((x.shape[0] + filterLength - 1)/2).astype(int)
-        if (dwtmode("status","nodisp") == 'per'):
-            n3 = np.ceil(((x.shape[0]))/2.0).astype(int)
-        n4 = n3
         Lo_D, Hi_D = wfilters(wname,'d')
-        out1 = np.zeros(n3*m3,dtype=np.float64)
-        out2 = np.zeros(n4*m4,dtype=np.float64)
-        if (len(args) == 3 and args[1] == 'mode'):
+        if (len(args) == 3 and isinstance(args[-1], str) and args[-2] == 'mode'):
             ST = dwtmode("status","nodisp")
-            dwtmode(args[2])
-        _dwt_neo(x,Lo_D,Hi_D,out1,out2)
-        if (len(args) == 3 and args[1] == 'mode'):
-            dwtmode(ST)
-        return out1, out2
-    elif (len(args) == 2 or (len(args) == 3 and args[2] == 'mode')):
-        # flow 1
+            dwtmode(args[-1])
+    elif((len(args) == 2 or (len(args) == 4 and isinstance(args[-1], str) and args[-2] == 'mode')) and not isinstance(args[0], str)):
         Lo_D = args[0]
         Hi_D = args[1]
-        filterLength = args[0].shape[0]
-        stride, val = _wave_len_validate(x.shape[0],filterLength)
-        if (val == 0):
-            raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
-
-        m3 = 1
-        m4 = 1
-        n3 = np.floor((x.shape[0] + filterLength - 1)/2).astype(int)
-        if (dwtmode("status","nodisp") == 'per'):
-            n3 = np.ceil(((x.shape[0]))/2.0).astype(int)
-        n4 = n3
-        out1 = np.zeros(n3*m3,dtype=np.float64)
-        out2 = np.zeros(n4*m4,dtype=np.float64)
-        if (len(args) == 3 and args[1] == 'mode'):
+        filterLength = Lo_D.shape[0]
+        if (len(args) == 4 and isinstance(args[-1], str) and args[-2] == 'mode'):
             ST = dwtmode("status","nodisp")
-            dwtmode(args[2])
-        _dwt_neo(x,Lo_D,Hi_D,out1,out2)
-        if (len(args) == 3 and args[1] == 'mode'):
-            dwtmode(ST)
-        return out1, out2
+            dwtmode(args[-1])
     else:
-        raise Exception("Wrong input!")
+        raise Exception("Wrong input!!")
+
+    stride, val = _wave_len_validate(x.shape[0],filterLength)
+    if (val == 0):
+        if (ST is not None):
+            dwtmode(ST)
+        raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
+    m3 = 1
+    m4 = 1
+    n3 = np.floor((m1*n1 + filterLength - 1)/2).astype(int)
+    if (dwtmode("status","nodisp") == 'per'):
+        n3 = np.ceil(((x.shape[0]))/2.0).astype(int)
+    n4 = n3
+    out1 = np.zeros(n3*m3,dtype=np.float64)
+    out2 = np.zeros(n4*m4,dtype=np.float64)
+    _dwt_neo(x,Lo_D,Hi_D,out1,out2)
+    if (ST is not None):
+        dwtmode(ST)
+    return out1, out2
 
 
 def idwt(cA, cD, *args):
-    raise Exception("Not yet implemented!!")
+    """
+    Inverse Discrete Fast Wavelet Transform
+    Calling Sequence
+    X=idwt(cA,cD,wname,[L],['mode',extMethod])
+    X=idwt(cA,cD,Lo_R,Hi_R,[L],['mode',extMethod])
+    Parameters
+    wname: wavelet name, haar( "haar"), daubechies ("db1" to "db36"), coiflets ("coif1" to "coif17"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
+    x : reconstructed vector
+    Lo_R: lowpass synthesis filter
+    Hi_R: highpass syntheis filter
+    L : restruction length
+    cA: approximation coefficent
+    cD: detail coefficent
+    Description
+    idwt is for inverse discrete fast wavelet transform. Coefficent could be void vector as '[]' for cA or cD.
+    Examples
+    x=np.random.rand(1,100)
+    [cA,cD]=dwt(x,'db2','mode','asymh')
+    x0=idwt(cA,cD,'db2',100)
+    """
+    cA = cA.flatten()
+    m1 = 1
+    n1 = cA.shape[0]
+    cD = cD.flatten()
+    m2 = 1
+    n2 = cD.shape[0]
+    L = None
+    ST = None
+    if (len(args) >= 1 and (len(args) < 3 or (len(args) >= 3 and isinstance(args[-1], str) and args[-2] == 'mode')) and isinstance(args[0], str)):
+        wname = args[0]
+        ret = _wavelet_parser(wname.encode())
+        filterLength = _wfilters_length(wname.encode())
+        Lo_R, Hi_R = wfilters(wname,'r')
+        if (len(args) > 1 and not isinstance(args[1],str)):
+            L = args[1]
+        if (len(args) >= 3 and isinstance(args[-1], str) and args[-2] == 'mode'):
+            ST = dwtmode("status","nodisp")
+            dwtmode(args[-1])
+    elif(len(args) >= 2 and (len(args) < 4 or (len(args) >= 4 and isinstance(args[-1], str) and args[-2] == 'mode')) and not isinstance(args[0], str)):
+        Lo_R = args[0]
+        Hi_R = args[1]
+        filterLength = Lo_R.shape[0]
+        if (len(args) > 2 and not isinstance(args[2],str)):
+            L = args[2]
+        if (len(args) >= 4 and isinstance(args[-1], str) and args[-2] == 'mode'):
+            ST = dwtmode("status","nodisp")
+            dwtmode(args[-1])
+    else:
+        raise Exception("Wrong input!!")
+
+    stride, val = _wave_len_validate(np.max((m1*n1, m2*n2)), filterLength)
+    if (val == 0):
+        raise Exception("Input signal is not valid for selected decompostion level and wavelets!")
+    m4 = 1
+    if (L is None):
+        if ((m1*n1 != 0)):  # and (dwtmode("status","nodisp") != "per")):
+            n4 = m1*n1*2 - filterLength + 2
+        if ((m1*n1 != 0) and (dwtmode("status","nodisp") == "per")):
+            n4 = m1*n1*2
+        if ((m1*n1 == 0)):  # and (dwtmode("status","nodisp") != "per")):
+            n4 = m2*n2*2 - pWaveStruct.length + 2
+        if ((m1*n1 == 0) and (dwtmode("status","nodisp") == "per")):
+            n4 = m2*n2*2
+    else:
+        n4 = L
+        if (L > np.max((m1*n1, m2*n2))*2 + filterLength):
+            if (ST is not None):
+                dwtmode(ST)
+            raise Exception("Length Parameter is not valid for input vector!!")
+    output1 = np.zeros(n4*m4,dtype=np.float64)
+    if ((m1*n1 == 0) and (m2*n2 != 0)):
+        _idwt_detail_neo(cD, Hi_R, output1)
+    elif ((m1*n1 != 0) and (m2*n2 == 0)):
+        _idwt_approx_neo(cA, Lo_R, output1)
+    elif ((m1*n1 != 0) and (m2*n2 != 0)):
+        _idwt_neo(cA, cD, Lo_R, Hi_R, output1)
+    else:
+        if (ST is not None):
+            dwtmode(ST)
+        raise Exception("Wrong input!!")
+    if (ST is not None):
+        dwtmode(ST)
+    return output1
 
 
 def wavedec(x, N, *args):
@@ -214,7 +283,43 @@ def waverec(C, L, *args):
     x0=waverec(C,L,'db2');
     err = sum(abs(X-x0))
     """
-    raise Exception("Not yet implemented!!")
+    C = C.flatten()
+    m1 = 1
+    n1 = C.shape[0]
+    L = L.flatten()
+    m2 = 1
+    n2 = L.shape[0]
+    L_summed_len = 0
+    for count in np.arange(m2 * n2 - 1):
+        L_summed_len += L[count]
+    if (L_summed_len != m1*n1):
+        raise Exception("Inputs are not coef and length array!!!")
+    val = 0
+    for count in np.arange(m2 * n2 - 1):
+        if (L[count] > L[count+1]):
+            val = 1
+            break
+    if (val != 0):
+        raise Exception("Inputs are not coef and length array!!!")
+
+    if (len(args) == 1 and isinstance(args[0], str)):
+        wname = args[0]
+        ret = _wavelet_parser(wname.encode())
+        filterLength = _wfilters_length(wname.encode())
+        Lo_R, Hi_R = wfilters(wname,'r')
+    elif(len(args) == 2):
+        Lo_R = args[0]
+        Hi_R = args[1]
+        filterLength = Lo_R.shape[0]
+    else:
+        raise Exception("Wrong input!!")
+    if (L[0] < filterLength):
+        raise Exception("Input signal is not valid for selected decompostion level and wavelets!\n")
+    m4 = 1
+    n4 = L[m2*n2-1]
+    output1 = np.zeros(n4*m4,dtype=np.float64)
+    _waverec(C, output1, Lo_R, Hi_R, L, m2*n2-2)
+    return output1
 
 
 def wrcoef(cA, cD, *args):
