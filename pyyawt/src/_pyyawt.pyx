@@ -20,7 +20,7 @@ __all__ = ["PYYAWT_HAAR", "PYYAWT_DAUBECHIES", "PYYAWT_COIFLETS", "PYYAWT_SYMLET
         "_dyadup_2D_feed_even_col", "_dyadup_2D_feed_odd", "_dyadup_2D_feed_even",
         "_wextend_1D_center", "_wextend_1D_left", "_wextend_1D_right", "_wextend_2D",
         "_wextend_2D_col", "_wextend_2D_row", "_waverec", "_wavedec", "_wave_dec_len_cal",
-        "_idwt_neo", "_idwt_detail_neo", "_idwt_approx_neo"]
+        "_idwt_neo", "_idwt_detail_neo", "_idwt_approx_neo", "_detcoef"]
 
 
 from c_pyyawt cimport *
@@ -917,5 +917,17 @@ def _idwt_approx_neo(np.ndarray[np.float64_t, ndim=1] cA, np.ndarray[np.float64_
         filterLength = lowRe.shape[0]
         
         idwt_approx_neo (<double*>cA.data, m1*n1, <double*>lowRe.data,  filterLength, <double*>output1.data, m5*n5)
-        filter_clear()        
+        filter_clear()
+
+def _detcoef(np.ndarray[np.float64_t, ndim=1] C, np.ndarray[np.int32_t, ndim=1] L,  np.ndarray[np.float64_t, ndim=1] output1, stride, level):
+        cdef int m1, n1
+        m1 = 1
+        n1 = C.shape[0]
+        cdef int m2, n2
+        m2 = 1
+        n2 = L.shape[0]
+        cdef int m5, n5
+        m4 = 1
+        n4 = output1.shape[0]
         
+        detcoef(<double*>C.data, m1*n1, <int*>L.data, m2*n2, <double*>output1.data, m4*n4, stride, level)

@@ -58,18 +58,23 @@ def wnoisest(C,L=None,S=None):
 
         # STDC(level) = median(abs(C(sum(l(1:(maxLevel-level+1)))+1:sum(l(1:(maxLevel-level+2))))))/.6745;
         # STDC[level] = np.median(np.abs(C[maxLevel-S[level]]))/.6745
-        STDC[level] = np.median(np.abs(detcoef(C,L,level)))/.6745
+        STDC[level] = np.median(np.abs(detcoef(C,L,level + 1)))/.6745
         # STDC(level) = median(abs(C(sum(L(1:level))+(1:L(level+1)))))/.6745;
 
     return STDC
 
 
-def wden(C,L,TPTR='heursure',SORH='s',SCAL='sln',N=2,wname='db4'):
+def wden(*args):
     """
     wden performs an automatic de-noising process of a one-dimensional signal using wavelets.
-
+    Calling Sequence
+    ----------------
+    [XD,CXD,LXD] = wden(X,TPTR,SORH,SCAL,N,wname)
+    [XD,CXD,LXD] = wden(C,L,TPTR,SORH,SCAL,N,wname)
     Parameters
     ----------
+    x: array_like
+          input vector
     C: array_like
          coefficent array
     L: array_like
@@ -104,8 +109,35 @@ def wden(C,L,TPTR='heursure',SORH='s',SCAL='sln',N=2,wname='db4'):
     level = 4
     xd = wden(x,'heursure','s','one',level,'sym8')
     """
-    # if (not isinstance(C, list)):
-    #    C,L = wavedec(C,wname)
+    if (len(args) == 6):
+        x = args[0]
+        TPTR = args[1]
+        SORH = args[2]
+        SCAL = args[3]
+        N = args[4]
+        wname = args[5]
+        if (not isinstance(wname, str)):
+            raise Exception("wname must be a string")
+        C,L = wavedec(x,N,wname)
+    elif (len(args) == 6):
+        C = args[0]
+        L = args[1]
+        TPTR = args[2]
+        SORH = args[3]
+        SCAL = args[4]
+        N = args[5]
+        wname = args[6]
+        if (not isinstance(wname, str)):
+            raise Exception("wname must be a string")
+    else:
+        raise Exception("Wrong input!!")
+    if (not isinstance(SCAL, str)):
+        raise Exception("SCAL must be a string")
+    if (not isinstance(SORH, str)):
+        raise Exception("SORH must be a string")
+    if (not isinstance(TPTR, str)):
+        raise Exception("TPTR must be a string")
+
     if (SCAL == 'one'):
         sigma = np.ones(N)
     elif (SCAL == 'sln'):
@@ -113,17 +145,17 @@ def wden(C,L,TPTR='heursure',SORH='s',SCAL='sln',N=2,wname='db4'):
     elif (SCAL == 'mln'):
         sigma = wnoisest(C,L,np.arange(N))
     else:
-        print("SCAL must be either ''one'',''sln'' or ''mln''")
+        raise Exception("SCAL must be either ''one'',''sln'' or ''mln''")
 
-    D = np.zeros(N)
+    D = []
     for n in np.arange(N):
-        D[n] = detcoef(C,L,n)
+        D.append(detcoef(C,L,n + 1))
     CXD = C
     LXD = L
     i = 0
     for n in np.arange(N,0,-1)-1:
         i = i+1
-        CXD[np.sum(L[:i])+np.arange(L[i+1])] = wthresh(D[n],SORH,thselect(D[n]/sigma[n],TPTR)*sigma[n])
+        CXD[np.sum(L[:i])+np.arange(L[i])] = wthresh(D[n],SORH,thselect(D[n]/sigma[n],TPTR)*sigma[n])
 
     # for n in np.arange(N):
     #    CXD[N-n] = wthresh(C[N-n],SORH,thselect(C[N-n]/sigma[n],TPTR)*sigma[n])

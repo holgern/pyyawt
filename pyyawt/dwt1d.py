@@ -330,8 +330,61 @@ def appcoef(cA, cD, *args):
     raise Exception("Not yet implemented!!")
 
 
-def detcoef(cA, cD, *args):
-    raise Exception("Not yet implemented!!")
+def detcoef(C, L, N=None):
+    """
+    1-D detail coefficients extraction
+    Calling Sequence
+    D=detcoef(C,L,[N])
+    Parameters
+    D : reconstructed detail coefficient
+    C : coefficent array
+    L : length array
+    N : restruction level with N<=length(L)-2
+    Description
+    detcoef is for extraction of detail coeffient at different level
+    after a multiple level decompostion. Extension mode is stored as
+    a global variable and could be changed with dwtmode. If N is omitted,
+    the detail coefficients will extract at the  maximum level (length(L)-2).
+
+    The length of D depends on the level N.
+
+    C and L can be generated using wavedec.
+    Examples
+    X = wnoise(4,10,0.5); //doppler with N=1024
+    [C,L]=wavedec(X,3,'db2');
+    D2=detcoef(C,L,2)
+    """
+    C = C.flatten()
+    m1 = 1
+    n1 = C.shape[0]
+    L = L.flatten()
+    m2 = 1
+    n2 = L.shape[0]
+
+    L_summed_len = 0
+    for count in np.arange(m2 * n2 - 1):
+        L_summed_len += L[count]
+    if (L_summed_len != m1*n1):
+        raise Exception("Inputs are not coef and length array!!!")
+    val = 0
+    for count in np.arange(m2 * n2 - 1):
+        if (L[count] > L[count+1]):
+            val = 1
+            break
+    if (val != 0):
+        raise Exception("Inputs are not coef and length array!!!")
+    if (N is None):
+        m4 = 1
+        n4 = L[0]
+        N = m2*n2 - 2
+    else:
+        if ((N > m2*n2 - 2) or N < 1):
+            raise Exception("Level Parameter is not valid for input vector!!!")
+        m4 = 1
+        n4 = L[n2*m2 - N - 1]
+    output1 = np.zeros(n4*m4,dtype=np.float64)
+    _detcoef(C,L,output1,m2*n2-2,N)
+    return output1
 
 
 def wenergy(cA, cD, *args):

@@ -20,6 +20,7 @@ from .dwt3d import *
 from .cowt import *
 from .cwt import *
 from .swt import *
+from .denoising import *
 
 from pyyawt.version import version as __version__
 
