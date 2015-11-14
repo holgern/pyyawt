@@ -71,9 +71,20 @@ For more usage examples see the `demo`_ directory in the source package.
 State of development & Contributing
 -----------------------------------
 
-PyYAWT started in 2009 as a scilab toolbox and was maintained until 2009 by its `original developer`_.  In 2010
+PyYAWT started in 2009 as a scilab toolbox and was maintained until 2009 by its `original developer`_.  
+Authors were
+* Professor Mei, Supervisor
+* Roger Liu 
+* Isaac Zhi 
+* Jason Huang
+* Du HuiQian
+
+In 2010
 maintenance was taken over in a `new repo <http://forge.scilab.org/index.php/p/swt/>`_)
 by Holger Nahrstaedt. 
+Daubechies wavelets coefficents DB2 - DB50 were calculated  by 
+ Bob Strunz - University of Limerick, Ireland
+
 
 As a next step, all the c-source files are forked into the python toolbox  `pyawt <https://github.com/holgern/pyyawt/>`_)
 
