@@ -11,6 +11,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import os
+import sys
 import re
 import datetime
 import jinja2.filters
@@ -45,7 +47,7 @@ project = 'PyYAWT'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-
+sys.path.insert(0, os.path.abspath('../..'))
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 # import pyyawt
