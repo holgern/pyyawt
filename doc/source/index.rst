@@ -79,14 +79,12 @@ Authors were
 * Jason Huang
 * Du HuiQian
 
-In 2010
-maintenance was taken over in a `new repo <http://forge.scilab.org/index.php/p/swt/>`_)
+In 2010, maintenance was taken over in a `new repo <http://forge.scilab.org/index.php/p/swt/>`_)
 by Holger Nahrstaedt. 
-Daubechies wavelets coefficents DB2 - DB50 were calculated  by 
- Bob Strunz - University of Limerick, Ireland
+Daubechies wavelets coefficents DB2 - DB50 were calculated  by Bob Strunz - University of Limerick, Ireland
 
 
-As a next step, all the c-source files are forked into the python toolbox  `pyawt <https://github.com/holgern/pyyawt/>`_)
+Finally, all the c-source files from the SWT-Toolbox are forked into this python toolbox  `pyawt <https://github.com/holgern/pyyawt/>`_)
 
 Contributions recarding bug reports, bug fixes and new features are welcome.  
 
@@ -110,13 +108,23 @@ Contents
 --------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
+  
+   dev/index.rst
+   resources.rst
+   
+.. automodule:: pyyawt
 
-   dev/index
-   resources
+
+   
+Indices and tables
+==================
+ 
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
 
-.. _built-in wavelet filters: http://wavelets.pybytes.com/
 .. _Cython: http://cython.org/
 .. _demo: https://github.com/holgern/pyyawt/tree/master/demo
 .. _GitHub: https://github.com/holgern/pyyawt

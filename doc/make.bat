@@ -3,7 +3,11 @@
 REM Command file for Sphinx documentation
 
 set SPHINXBUILD=sphinx-build
+set SPHINXAPIDOC=sphinx-apidoc
+set SOURCEDIR=source
+set MODULEDIR=pyyawt
 set BUILDDIR=build
+set APIDOCSPHINXOPTS=-f -o %SOURCEDIR%/  ../%MODULEDIR%/
 set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
@@ -15,6 +19,7 @@ if "%1" == "help" (
 	:help
 	echo.Please use `make ^<target^>` where ^<target^> is one of
 	echo.  html      to make standalone HTML files
+	echo.  apidoc    to make rst files
 	echo.  dirhtml   to make HTML files named index.html in directories
 	echo.  pickle    to make pickle files
 	echo.  json      to make JSON files
@@ -37,6 +42,13 @@ if "%1" == "html" (
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
 	echo.
 	echo.Build finished. The HTML pages are in %BUILDDIR%/html.
+	goto end
+)
+
+if "%1" == "apidoc" (
+	%SPHINXAPIDOC%  %APIDOCSPHINXOPTS%
+	echo.
+	echo.Build finished. The Rst pages are in %SOURCEDIR%.
 	goto end
 )
 

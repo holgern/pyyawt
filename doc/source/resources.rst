@@ -21,18 +21,9 @@ Use `GitHub Issues`_ to post questions
 and open tickets.
 
 
-Wavelet Properties Browser
---------------------------
-
-Browse properties and graphs of wavelets included in PyYAWT on
-`pyawt.pybytes.com`_.
-
 
 Articles
 --------
 
-
-
 .. _GitHub repository: https://github.com/holgern/pyyawt
 .. _GitHub Issues: https://github.com/holgern/pyyawt/issues
-.. _pyawt.pybytes.com: http://pyawt.pybytes.com/
