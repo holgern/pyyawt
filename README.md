@@ -6,12 +6,13 @@ This toolbox is aimed to mimic matlab wavelet toolbox. Most of the functions are
 similiar to their counterparts in Matlab equivalents. 
 
 The toolbox based on the scilab wavelet toolbox (http://atoms.scilab.org/toolboxes/swt)
+which is a port of the scwt toolbox. 
 
 Authors
-* Holger Nahrstaedt
+* Holger Nahrstaedt 2010 - 2015
 * Daubechies wavelets coefficents DB2 - DB50  from Bob Strunz - University of Limerick, Ireland
 
-Authors of the scwt toolbox
+Authors of the scwt toolbox (2005 - 2006, http://scwt.sourceforge.net/)
 * Professor Mei, Supervisor
 * Roger Liu 
 * Isaac Zhi 
