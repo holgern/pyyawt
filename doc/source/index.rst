@@ -106,12 +106,12 @@ PyYAWT is a free Open Source software released under the GPL license.
 
 Contents
 --------
-
 .. toctree::
-   :maxdepth: 2
-  
-   dev/index.rst
-   resources.rst
+   :maxdepth: 1
+   modules
+   
+   dev/index
+   resources
    
 .. automodule:: pyyawt
 
