@@ -34,6 +34,7 @@ def orthfilt(w):
          lowpass synthesis filter
     Hi_R: array_like
          highpass synthesis filter
+
     Examples
     --------
     F = dbwavf("db2")
@@ -70,6 +71,7 @@ def biorfilt(df,rf):
          lowpass synthesis filter
     Hi_R: array_like
          highpass synthesis filter
+
     Examples
     --------
     RF,DF = biorwavf('bior3.3')
@@ -204,6 +206,7 @@ def biorwavf(wname):
          synthesis scaling filter
     DF: array_like
          analysis scaling filter
+
     Examples
     --------
     RF,DF = biorwavf('bior3.3');
@@ -234,6 +237,7 @@ def rbiorwavf(wname):
          synthesis scaling filter
     DF: array_like
          analysis scaling filter
+
     Examples
     --------
     [RF,DF]=rbiorwavf('rbior3.3')
@@ -276,6 +280,7 @@ def wfilters(wname,filterType=None):
          lowpass synthesis filter
     Hi_R: array_like
          highpass synthesis filter
+
     Examples
     --------
     [lo_d,hi_d,lo_r,hi_r]=wfilters('db2')

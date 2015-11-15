@@ -39,12 +39,14 @@ def dwt(x,*args):
          highpass analysis filter
     extMethod : str
          extension mode, 'zpd' for example
+
     Returns
     -------
     cA: array_like
          approximation coefficent
     cD: array_like
          detail coefficent
+
     Examples
     --------
     cA,cD=dwt(x,'db2','mode','asymh')
@@ -93,10 +95,14 @@ def dwt(x,*args):
 def idwt(cA, cD, *args):
     """
     Inverse Discrete Fast Wavelet Transform
+
     Calling Sequence
+    ----------------
     X=idwt(cA,cD,wname,[L],['mode',extMethod])
     X=idwt(cA,cD,Lo_R,Hi_R,[L],['mode',extMethod])
+
     Parameters
+    ----------
     wname: wavelet name, haar( "haar"), daubechies ("db1" to "db36"), coiflets ("coif1" to "coif17"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
     x : reconstructed vector
     Lo_R: lowpass synthesis filter
@@ -104,9 +110,13 @@ def idwt(cA, cD, *args):
     L : restruction length
     cA: approximation coefficent
     cD: detail coefficent
+
     Description
+    -----------
     idwt is for inverse discrete fast wavelet transform. Coefficent could be void vector as '[]' for cA or cD.
+
     Examples
+    --------
     x=np.random.rand(1,100)
     [cA,cD]=dwt(x,'db2','mode','asymh')
     x0=idwt(cA,cD,'db2',100)
@@ -179,10 +189,14 @@ def idwt(cA, cD, *args):
 def wavedec(x, N, *args):
     """
     Multiple level 1-D discrete fast wavelet decomposition
+
     Calling Sequence
+    ----------------
     [C,L]=wavedec(X,N,wname)
     [C,L]=wavedec(X,N,Lo_D,Hi_D)
+
     Parameters
+    ----------
     wname : wavelet name, haar( "haar"), daubechies ("db1" to "db36"), coiflets ("coif1" to "coif17"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
     X : signal vector
     N : decompostion level
@@ -190,7 +204,9 @@ def wavedec(x, N, *args):
     Hi_D : highpass analysis filter
     C : coefficient vector
     L : length vector
+
     Description
+    -----------
     wavedec can be used for multiple-level 1-D discrete fast wavelet
     decompostion using a specific wavelet name wname or wavelet decompostion
     filters Lo_D and Hi_D. Such filters can be generated using wfilters.
@@ -206,8 +222,10 @@ def wavedec(x, N, *args):
 
     The approximation coefficient can be extracted with C(1:L(1)).
     The detail coefficients can be obtained with C(L(1):sum(L(1:2))),
-    C(sum(L(1:2)):sum(L(1:3))),.... until C(sum(L(1:length(L)-2)):sum(L(1:length(L)-1))).
+    C(sum(L(1:2)):sum(L(1:3))),.... until C(sum(L(1:length(L)-2)):sum(L(1:length(L)-1)))
+
     Examples
+    --------
     X = wnoise(4,10,0.5); //doppler with N=1024
     [C,L]=wavedec(X,3,'db2')
     """
@@ -262,22 +280,30 @@ def wavedec(x, N, *args):
 def waverec(C, L, *args):
     """
     Multiple level 1-D inverse discrete fast wavelet reconstruction
+
     Calling Sequence
+    ----------------
     x0=waverec(C,L,wname)
     x0=waverec(C,L,Lo_R,Hi_R)
+
     Parameters
+    ----------
     wname : wavelet name, haar( "haar"), daubechies ("db1" to "db36"), coiflets ("coif1" to "coif17"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
     x0 : reconstructed vector
     Lo_R : lowpass synthesis filter
     Hi_R : highpass synthesis filter
     C : coefficent array
     L : length array
+
     Description
+    -----------
     waverec can be used for multiple-level 1-D inverse discrete fast wavelet
     reconstruction.
 
     waverec supports only orthogonal or biorthogonal wavelets.
+
     Examples
+    --------
     X = wnoise(4,10,0.5); //doppler with N=1024
     [C,L]=wavedec(X,3,'db2');
     x0=waverec(C,L,'db2');
@@ -333,14 +359,19 @@ def appcoef(cA, cD, *args):
 def detcoef(C, L, N=None):
     """
     1-D detail coefficients extraction
+
     Calling Sequence
+    ----------------
     D=detcoef(C,L,[N])
+
     Parameters
+    ----------
     D : reconstructed detail coefficient
     C : coefficent array
     L : length array
     N : restruction level with N<=length(L)-2
     Description
+    -----------
     detcoef is for extraction of detail coeffient at different level
     after a multiple level decompostion. Extension mode is stored as
     a global variable and could be changed with dwtmode. If N is omitted,
@@ -349,7 +380,9 @@ def detcoef(C, L, N=None):
     The length of D depends on the level N.
 
     C and L can be generated using wavedec.
+
     Examples
+    --------
     X = wnoise(4,10,0.5); //doppler with N=1024
     [C,L]=wavedec(X,3,'db2');
     D2=detcoef(C,L,2)
