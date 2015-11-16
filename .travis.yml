@@ -45,6 +45,7 @@ before_install:
   - travis_retry pip install nose
   - pip install coverage
   - pip install coveralls
+  - pip install codecov
   - python -V
   - set -o pipefail
 
@@ -54,3 +55,4 @@ script:
   - nosetests -v --with-coverage
 after_success:
   - coveralls
+  - codecov

@@ -347,11 +347,78 @@ def waverec(C, L, *args):
     return output1
 
 
-def wrcoef(cA, cD, *args):
+def wrcoef(approx_or_detail, C, L, *args):
+    """
+    Restruction from single branch from multiple level decomposition
+
+    Calling Sequence
+    ----------------
+    X=wrcoef(type,C,L,wname,[N])
+    X=wrcoef(type,C,L,Lo_R,Hi_R,[N])
+
+    Parameters
+    ----------
+    type : approximation or detail, 'a' or 'd'.
+    wname : wavelet name
+    X : vector of reconstructed coefficents
+    Lo_R : lowpass synthesis filter
+    Hi_R : highpass syntheis filter
+    C : coefficent array
+    L : length array
+    N : restruction level with length(L)-2>=N
+
+    Description
+    -----------
+    wrcoef is for reconstruction from single branch of multiple level
+    decomposition from 1-D wavelet coefficients. Extension mode is stored as a global variable
+    and could be changed with dwtmode. If N is omitted, maximum level (length(L)-2) is used.
+
+    The wavelet coefficents C and L can be generated using wavedec.
+
+    Examples
+    --------
+    x=rand(1,100)
+    [C,L]=wavedec(x,3,'db2')
+    x0=wrcoef('a',C,L,'db2',2)
+    """
     raise Exception("Not yet implemented!!")
 
 
-def appcoef(cA, cD, *args):
+def appcoef(C, L, *args):
+    """
+    1-D approximation coefficients extraction
+
+    Calling Sequence
+    ----------------
+    A=appcoef(C,L,wname,[N])
+    A=appcoef(C,L,Lo_R,Hi_R,[N])
+
+    Parameters
+    ----------
+    wname : wavelet name, haar( "haar"), daubechies ("db1" to "db20"), coiflets ("coif1" to "coif5"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
+    A : extracted approximation coefficients
+    Lo_R : lowpass synthesis filter
+    Hi_R : highpass syntheis filter
+    C : coefficent array
+    L : length array
+    N : restruction level with N<=length(L)-2
+
+    Description
+    -----------
+    appcoef can be used for extraction or reconstruction of approximation
+    coefficents at  level N after a multiple level decompostion.
+    Extension mode is stored as a global variable and could be changed
+    with dwtmode. If N is omitted, the maximum level (length(L)-2) is used.
+
+    The length of A depends on the level N.
+    C and L can be generated using wavedec.
+
+    Examples
+    --------
+    X = wnoise(4,10,0.5)
+    [C,L]=wavedec(X,3,'db2')
+    A2=appcoef(C,L,'db2',2)
+    """
     raise Exception("Not yet implemented!!")
 
 
@@ -419,13 +486,96 @@ def detcoef(C, L, N=None):
     return output1
 
 
-def wenergy(cA, cD, *args):
+def wenergy(C,L):
+    """
+    Energy Statistics from multiple level decompostion
+
+    Calling Sequence
+    ----------------
+    [Ea,Ed]=wenergy(c,l)
+
+    Parameters
+    ----------
+    Ea : energy percentage of approximation coefficent
+    Ed : energy percentage of detail coefficent, vector
+    c : coefficent array
+    l : length array
+
+    Description
+    -----------
+    wenergy is to calculate the energy percentage of approximation and detail coefficent.
+
+    Examples
+    --------
+    x=rand(1,100)
+    [C,L]=wavedec(x,3,'db2')
+    [Ea,Ed]=wenergy(C,L)
+    """
     raise Exception("Not yet implemented!!")
 
 
-def upcoef(cA, cD, *args):
+def upcoef(aprox_or_detail, x, *args):
+    """
+    Direct Restruction
+
+    Calling Sequence
+    ----------------
+    Y=upcoef(type,x,wname,[N],[L])
+    Y=upcoef(type,x,Lo_R,Hi_R,[N],[L])
+
+    Parameters
+    ----------
+    type: approximation or detail, 'a' or 'd'.
+    x: input vector
+    wname: wavelet name, haar( "haar"), daubechies ("db1" to "db36"), coiflets ("coif1" to "coif17"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
+    X: reconstruction
+    Lo_R: lowpass synthesis filter
+    Hi_R: highpass syntheis filter
+    N: restruction level
+    L: desired output length
+
+    Description
+    -----------
+    upcoef is for upward reconstruction from any desired input vector.
+
+    Examples
+    --------
+    x=rand(1,100);
+    [cA,cD]=dwt(x,'db2')
+    Y=upcoef('a',cA,'db2',1)
+    Z=upcoef('a',cA,'db2',3)
+    """
     raise Exception("Not yet implemented!!")
 
 
-def upwlev(cA, cD, *args):
+def upwlev(C, L, *args):
+    """
+    Single Level Reconstruction from multiple level decompostion
+
+    Calling Sequence
+    ----------------
+    [NC,NL,CA]=upwlev(c,l,wname)
+    [NC,NL,CA]=upwlev(c,l,Lo_R,Hi_R)
+
+    Parameters
+    ----------
+    wname: wavelet name, haar( "haar"), daubechies ("db1" to "db36"), coiflets ("coif1" to "coif17"), symlets ("sym2" to "sym20"), legendre ("leg1" to "leg9"), bathlets("bath4.0" to "bath4.15" and "bath6.0" to "bath6.15"), dmey ("dmey"), beyklin ("beylkin"), vaidyanathan ("vaidyanathan"), biorthogonal B-spline wavelets ("bior1.1" to "bior6.8"), "rbior1.1" to "rbior6.8"
+    NC: upward level coefficent array
+    NL: upward level length array
+    CA: approximation coeffient at the last level
+    Lo_R: lowpass synthesis filter
+    Hi_R: highpass syntheis filter
+    c: coefficent array
+    l: length array
+
+    Description
+    -----------
+    upwlev is for single level reconstruction.
+
+    Examples
+    --------
+    x=rand(1,100)
+    [C,L]=wavedec(x,3,'db2')
+    [NC,NL,CA3]=upwlev(C,L,'db2')
+    """
     raise Exception("Not yet implemented!!")
