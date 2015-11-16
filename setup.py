@@ -9,7 +9,7 @@ import subprocess
 MAJOR = 0
 MINOR = 1
 MICRO = 1
-ISRELEASED = False
+ISRELEASED = True
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 
@@ -134,34 +134,31 @@ def setup_package():
     metadata = dict(
         name="pyyawt",
         maintainer="Holger Nahrstaedt",
-        maintainer_email=" ",
+        maintainer_email="holgernahrstaedt@gmx.de",
         url="https://github.com/holgern/pyyawt",
-        download_url="https://github.com/holgern/pyyawt/releases",
-        license="BSD",
+        license=" GNU General Public License v2 (GPLv2)",
         description="library for wavelet calculations",
         long_description="""\
-        This toolbox is aimed to mimic matlab wavelet toolbox. Most of the functions are
-		similiar to their counterparts in Matlab equivalents. 
-
-		pyyawt is based on Scilab Wavelet Toolbox (http://atoms.scilab.org/toolboxes/swt)
-
+        This toolbox is aimed to mimic matlab wavelet toolbox. Most of the functions are similiar to their counterparts in Matlab equivalents. pyyawt is based on Scilab Wavelet Toolbox (http://atoms.scilab.org/toolboxes/swt)
         """,
         keywords=["wavelet", "dwt", "cwt"],
         classifiers=[
-            "Development Status :: 5 - Production/Stable",
+            "Development Status :: 3 - Alpha",
             "Intended Audience :: Developers",
             "Intended Audience :: Education",
             "Intended Audience :: Science/Research",
-            "License :: OSI Approved :: BSD License",
+            "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
             "Operating System :: OS Independent",
             "Programming Language :: C",
             "Programming Language :: Python",
-            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 2",
             "Programming Language :: Python :: 2.6",
             "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3",
             "Programming Language :: Python :: 3.3",
             "Programming Language :: Python :: 3.4",
             "Programming Language :: Python :: 3.5",
+            "Topic :: Scientific/Engineering :: Mathematics",
             "Topic :: Software Development :: Libraries :: Python Modules"
         ],
         platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],

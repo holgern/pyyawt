@@ -20,13 +20,12 @@ __all__ = ['dwt', 'idwt', 'wavedec', 'waverec', 'wrcoef', 'appcoef', 'detcoef', 
 def dwt(x,*args):
     """
     dwt is for discrete fast wavelet transform with the signal extension method optional argument. Available wavelets include haar, daubechies (db1 to db20), coiflets (coif1 to coif5), symlets (sym2 to sym20), legendre (leg1 to leg9), bathlets, dmey, beyklin, vaidyanathan, biorthogonal B-spline wavelets (bior1.1 to bior6.8).
-
+    ----------------
     Calling Sequence
     ----------------
-
     [cA,cD]=dwt(x,wname,['mode',extMethod])
     [cA,cD]=dwt(x,Lo_D,Hi_D,['mode',extMethod])
-
+    ----------
     Parameters
     ----------
     wname: str
@@ -39,14 +38,14 @@ def dwt(x,*args):
          highpass analysis filter
     extMethod : str
          extension mode, 'zpd' for example
-
+    -------
     Returns
     -------
     cA: array_like
          approximation coefficent
     cD: array_like
          detail coefficent
-
+    --------
     Examples
     --------
     cA,cD=dwt(x,'db2','mode','asymh')

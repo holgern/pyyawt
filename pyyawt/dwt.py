@@ -253,8 +253,7 @@ def rbiorwavf(wname):
 
 
 def wfilters(wname,filterType=None):
-    """
-    wfilters is an utility function for obtaining analysis and synthesis filter set.
+    """wfilters is an utility function for obtaining analysis and synthesis filter set.
 
     Calling Sequence
     ----------------

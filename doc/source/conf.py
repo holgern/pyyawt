@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 # -*- coding: utf-8 -*-
 #
 # PyYAWT documentation build configuration file, created by
@@ -32,6 +33,7 @@ sys.path.insert(0, os.path.abspath('../../pyyawt'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
