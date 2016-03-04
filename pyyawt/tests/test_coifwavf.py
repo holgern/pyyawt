@@ -13,6 +13,7 @@ import pyyawt
 class TestCoifwavf(unittest.TestCase):
     def setUp(self):
         self.accuracy_decimal = 15
+
     def test_sum(self):
         for N in np.arange(1,18):
             w = pyyawt.coifwavf("coif" + str(N))

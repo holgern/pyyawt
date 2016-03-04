@@ -13,6 +13,7 @@ import pyyawt
 class TestSymwavf(unittest.TestCase):
     def setUp(self):
         self.accuracy_decimal = 11
+
     def test_sum(self):
         for N in np.arange(2,20):
             w = pyyawt.symwavf("sym" + str(N))
