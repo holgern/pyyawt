@@ -145,7 +145,7 @@ def _legdwavf(char *wname, char *filtertype, np.ndarray[np.float64_t, ndim=1] si
                 legendre_synthesis_initialize(ret_member,&thisptr)
         else:
                 legendre_analysis_initialize(ret_member,&thisptr)
-        m2 = 1;
+        m2 = 1
         n2 = thisptr.length
         if (filtertype == b'Lo_D' or filtertype == b'Lo_R'):
                 verbatim_copy (thisptr.pLowPass, m2*n2, <double*>sigbuf.data, m2*n2)
@@ -557,7 +557,7 @@ def _wkeep_1D_left(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64
         m2 = 1
         n2 = output.shape[0]
 
-        wkeep_1D_left (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        wkeep_1D_left (<double*>input.data, m1*n1, <double*>output.data, m2*n2)
         
 def _wkeep_1D_right(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output):
         cdef int m1, n1
@@ -567,7 +567,7 @@ def _wkeep_1D_right(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float6
         m2 = 1
         n2 = output.shape[0]
 
-        wkeep_1D_right (<double*>input.data, m1*n1, <double*>output.data, m2*n2);
+        wkeep_1D_right (<double*>input.data, m1*n1, <double*>output.data, m2*n2)
         
 def _wkeep_1D_index(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float64_t, ndim=1] output, first):
         cdef int m1, n1
@@ -577,7 +577,7 @@ def _wkeep_1D_index(np.ndarray[np.float64_t, ndim=1] input, np.ndarray[np.float6
         m2 = 1
         n2 = output.shape[0]
 
-        wkeep_1D_index (<double*>input.data, m1*n1, <double*>output.data, m2*n2, first);
+        wkeep_1D_index (<double*>input.data, m1*n1, <double*>output.data, m2*n2, first)
 
 def _wkeep_2D_center(np.ndarray[np.float64_t, ndim=2] input, np.ndarray[np.float64_t, ndim=2] output):
         cdef int m1, n1

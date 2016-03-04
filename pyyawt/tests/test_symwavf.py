@@ -11,28 +11,30 @@ import pyyawt
 
 
 class TestSymwavf(unittest.TestCase):
+    def setUp(self):
+        self.accuracy_decimal = 11
     def test_sum(self):
         for N in np.arange(2,20):
             w = pyyawt.symwavf("sym" + str(N))
-            np.testing.assert_almost_equal(np.sum(w)-np.sqrt(2),0)
+            np.testing.assert_almost_equal(np.sum(w)-np.sqrt(2),0, decimal=self.accuracy_decimal)
 
     def test_sumEven(self):
         for N in np.arange(2,20):
             w = pyyawt.symwavf("sym" + str(N))
-            np.testing.assert_almost_equal(np.sum(w[::2]), 1./np.sqrt(2))
+            np.testing.assert_almost_equal(np.sum(w[::2]), 1./np.sqrt(2), decimal=self.accuracy_decimal)
 
     def test_sumOdd(self):
         for N in np.arange(2,20):
             w = pyyawt.symwavf("sym" + str(N))
-            np.testing.assert_almost_equal(np.sum(w[1::2]),1./np.sqrt(2))
+            np.testing.assert_almost_equal(np.sum(w[1::2]),1./np.sqrt(2), decimal=self.accuracy_decimal)
 
     def test_ZeroOne(self):
         for N in np.arange(2,20):
             m = 0
             w = pyyawt.symwavf("sym" + str(N))
-            np.testing.assert_almost_equal(np.sum(w[2*m:(2*N+2*m)]*w[0:2*N]),1)
+            np.testing.assert_almost_equal(np.sum(w[2*m:(2*N+2*m)]*w[0:2*N]),1, decimal=self.accuracy_decimal)
             for m in np.arange(1, N-1):
-                np.testing.assert_almost_equal(np.sum(w[2*m:(2*N)]*w[0:2*N-2*m]),0)
+                np.testing.assert_almost_equal(np.sum(w[2*m:(2*N)]*w[0:2*N-2*m]),0, decimal=self.accuracy_decimal)
 
 
 if __name__ == '__main__':

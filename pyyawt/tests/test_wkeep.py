@@ -125,3 +125,8 @@ class TestWkeep(unittest.TestCase):
         c1 = a[1:28,:][:,2:28]
         np.testing.assert_almost_equal(b, c)
         np.testing.assert_almost_equal(b1, c1)
+
+
+if __name__ == '__main__':
+    # run_module_suite(argv=sys.argv)
+    unittest.main()

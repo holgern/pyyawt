@@ -301,3 +301,8 @@ class TestDwt(unittest.TestCase):
         r = pyyawt.idwt(cA,cD,Lo_R,Hi_R,50,'mode','per')
         x0 = pyyawt.wkeep(a0+d0,50)
         np.testing.assert_almost_equal(r, x0)
+
+
+if __name__ == '__main__':
+    # run_module_suite(argv=sys.argv)
+    unittest.main()

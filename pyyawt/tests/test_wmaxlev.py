@@ -25,6 +25,7 @@ class TestWmaxlev(unittest.TestCase):
         np.testing.assert_almost_equal(l5, l)
         np.testing.assert_almost_equal(l6, l)
 
+
 if __name__ == '__main__':
     # run_module_suite(argv=sys.argv)
     unittest.main()

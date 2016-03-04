@@ -124,3 +124,8 @@ class TestDyadup(unittest.TestCase):
         np.testing.assert_almost_equal(b9, c1)
         np.testing.assert_almost_equal(b10, c3)
         np.testing.assert_almost_equal(b11, b5)
+
+
+if __name__ == '__main__':
+    # run_module_suite(argv=sys.argv)
+    unittest.main()

@@ -41,3 +41,8 @@ class TestDetcoef(unittest.TestCase):
         np.testing.assert_almost_equal(cddetMax, cD[level-1])
         for i in np.arange(level):
             np.testing.assert_almost_equal(cdet[i], cD[i])
+
+
+if __name__ == '__main__':
+    # run_module_suite(argv=sys.argv)
+    unittest.main()

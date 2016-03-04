@@ -193,3 +193,8 @@ class TestDwt(unittest.TestCase):
         cdd = pyyawt.dyaddown(pyyawt.wkeep(pyyawt.conv(pyyawt.wextend(1,dwtModes[N],s1,np.size(Lo_D),'b'),Hi_D),(np.size(s1))))
         np.testing.assert_almost_equal(caa.flatten(), cA)
         np.testing.assert_almost_equal(cdd.flatten(), cD)
+
+
+if __name__ == '__main__':
+    # run_module_suite(argv=sys.argv)
+    unittest.main()

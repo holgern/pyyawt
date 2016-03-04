@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2015 Chris Lee-Messer <https://bitbucket.org/cleemesser/>
 # Copyright (c) 2015 Holger Nahrstaedt
 
 # get constants
